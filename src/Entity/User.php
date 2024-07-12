@@ -33,6 +33,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $name = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $surname = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $username = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $telephone = null;
+
+    /**
+     * @param int|null $id
+     * @param string|null $email
+     * @param string[] $roles
+     * @param string|null $password
+     * @param string|null $name
+     * @param string|null $surname
+     * @param string|null $username
+     * @param string|null $telephone
+     */
+    public function __construct(?int $id = null, ?string $email = null, ?string $password = null, ?string $name = null, ?string $surname = null, ?string $username= null, ?string $telephone = null)
+    {
+        $this->id = $id;
+        $this->email = $email;
+        $this->password = $password;
+        $this->name = $name;
+        $this->surname = $surname;
+        $this->username = $username;
+        $this->telephone = $telephone;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -106,5 +140,53 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSurname(): ?string
+    {
+        return $this->surname;
+    }
+
+    public function setSurname(?string $surname): static
+    {
+        $this->surname = $surname;
+
+        return $this;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(?string $username): static
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(?string $telephone): static
+    {
+        $this->telephone = $telephone;
+
+        return $this;
     }
 }

@@ -48,7 +48,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @param int|null $id
      * @param string|null $email
-     * @param string[] $roles
      * @param string|null $password
      * @param string|null $name
      * @param string|null $surname

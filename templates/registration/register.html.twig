@@ -23,49 +23,54 @@
                                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
                                     <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Crear cuenta</p>
-                                    {{ form_errors(registrationForm) }}
 
                                     {{ form_start(registrationForm) }}
                                     <div class="mx-1 mx-md-4">
                                         <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                                             <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                                {{ form_row(registrationForm.name) }}
+                                                {{ form_widget(registrationForm.name) }}
+                                                <small class="form-text text-danger">{{ form_errors(registrationForm.name) }}</small>
                                             </div>
                                         </div>
 
                                         <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                                             <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                                {{ form_row(registrationForm.surname) }}
+                                                {{ form_widget(registrationForm.surname) }}
+                                                <small class="form-text text-danger">{{ form_errors(registrationForm.surname) }}</small>
                                             </div>
                                         </div>
 
                                         <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-phone fa-lg me-3 fa-fw"></i>
                                             <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                                {{ form_row(registrationForm.telephone) }}
+                                                {{ form_widget(registrationForm.telephone) }}
+                                                <small class="form-text text-danger">{{ form_errors(registrationForm.telephone) }}</small>
                                             </div>
                                         </div>
 
                                         <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-address-book fa-lg me-3 fa-fw"></i>
                                             <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                                {{ form_row(registrationForm.username) }}
+                                                {{ form_widget(registrationForm.username) }}
+                                                <small class="form-text text-danger">{{ form_errors(registrationForm.username) }}</small>
                                             </div>
                                         </div>
 
                                         <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                                             <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                                {{ form_row(registrationForm.email) }}
+                                                {{ form_widget(registrationForm.email) }}
+                                                <small class="form-text text-danger">{{ form_errors(registrationForm.email) }}</small>
                                             </div>
                                         </div>
 
                                         <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                                             <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                                {{ form_row(registrationForm.plainPassword) }}
+                                                {{ form_widget(registrationForm.plainPassword) }}
+                                                <small class="form-text text-danger">{{ form_errors(registrationForm.plainPassword) }}</small>
                                             </div>
                                         </div>
 
@@ -85,7 +90,7 @@
                                         </div> #}
 
                                         <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                            <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-lg gradient-button btn-form">Crear cuenta</button>
+                                            <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-lg gradient-button">Crear cuenta</button>
                                         </div>
                                     </div>
                                     {{ form_end(registrationForm) }}

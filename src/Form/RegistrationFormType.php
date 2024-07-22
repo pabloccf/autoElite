@@ -21,7 +21,7 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'required' => true,
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Nombre',
                     'class' => 'form-control'
@@ -32,7 +32,7 @@ class RegistrationFormType extends AbstractType
                 ]
             ])
             ->add('surname', TextType::class, [
-                'required' => true,
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Apellidos',
                     'class' => 'form-control'
@@ -43,7 +43,7 @@ class RegistrationFormType extends AbstractType
                 ]
             ])
             ->add('username', TextType::class, [
-                'required' => true,
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Usuario',
                     'class' => 'form-control'
@@ -54,7 +54,7 @@ class RegistrationFormType extends AbstractType
                 ]
             ])
             ->add('telephone', TextType::class, [
-                'required' => true,
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Teléfono',
                     'class' => 'form-control'
@@ -69,7 +69,7 @@ class RegistrationFormType extends AbstractType
                 ]
             ])
             ->add('email', EmailType::class, [
-                'required' => true,
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Email',
                     'class' => 'form-control'
@@ -95,7 +95,7 @@ class RegistrationFormType extends AbstractType
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
-                'required' => true,
+                'required' => false,
                 'attr' => [
                     'autocomplete' => 'new-password',
                     'placeholder' => 'Contraseña',
@@ -110,7 +110,11 @@ class RegistrationFormType extends AbstractType
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
-                ],
+                    new Regex([
+                        'pattern' => '^(?=.*[A-Z])(?=.*[a-z])(?=.*\W).+$',
+                        'message' => 'La contraseña debe contener al menos una letra mayúscula, una minúscula y un símbolo'
+                    ])
+                ]
             ])
         ;
     }

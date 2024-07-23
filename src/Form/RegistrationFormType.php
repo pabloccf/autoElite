@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -63,8 +64,8 @@ class RegistrationFormType extends AbstractType
                 'constraints' => [
                     new NotBlank(['message' => 'Este campo no puede estar vacío']),
                     new Regex([
-                        'pattern' => '/^[0-9-()+]{3,20}/',
-                        'message' => 'Compruebe su n&uacute;mero de teléfono'
+                        'pattern' => '/^[6789]\d{8}$/',
+                        'message' => 'Compruebe su número de teléfono'
                     ])
                 ]
             ])
@@ -77,10 +78,7 @@ class RegistrationFormType extends AbstractType
                 'label' => false,
                 'constraints' => [
                     new NotBlank(['message' => 'Este campo no puede estar vacío']),
-                    new Regex([
-                        'pattern' => '/\S+@\S+\.\S+/',
-                        'message' => 'Compruebe su email'
-                    ])
+                    new Email(['message' => 'Compruebe su email'])
                 ]
             ])
             /*->add('agreeTerms', CheckboxType::class, [
@@ -111,8 +109,8 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                     new Regex([
-                        'pattern' => '^(?=.*[A-Z])(?=.*[a-z])(?=.*\W).+$',
-                        'message' => 'La contraseña debe contener al menos una letra mayúscula, una minúscula y un símbolo'
+                        'pattern' => '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).*$/',
+                        'message' => 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter alfanumérico'
                     ])
                 ]
             ])

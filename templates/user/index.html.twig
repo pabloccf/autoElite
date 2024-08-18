@@ -19,6 +19,7 @@
             width: 100%;
         }
     </style>
+
     <div class="container dealer-wallpaper">
         <div class="col-md-12">
             <div class="pt-5 pb-3">
@@ -34,7 +35,7 @@
                             <th>Email</th>
                             <th>Tel&eacute;fono</th>
                             <th>Rol</th>
-    {#                        <th>Acciones</th>#}
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,11 +53,11 @@
                                         <strong>Usuario</strong>
                                     {% endif %}
                                 </td>
-                                {#<td class="actions">
-                                    <a href="{{ path('user_view', { id : user.id }) }}" class="btn btn-sm btn-info">View</a>
-                                    <a href="{{ path('user_edit', { id : user.id }) }}" class="btn btn-sm btn-primary">Edit</a>
-                                    <a href="#" class="btn btn-sm btn-danger btn-delete">Delete</a>
-                                </td>#}
+                                <td class="actions">
+                                    <a href="{{ path('view_user', { id : user.id }) }}" class="btn btn-sm btn-info fa-solid fa-eye"></a>
+                                    {#<a href="{{ path('user_edit', { id : user.id }) }}" class="btn btn-sm btn-primary">Edit</a>
+                                    <a href="#" class="btn btn-sm btn-danger btn-delete">Delete</a>#}
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>

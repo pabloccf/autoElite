@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Usuarios{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+    <style>
+        .dealer-wallpaper {
+            background-image: url("{{ asset('images/fondoConcesionario.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: auto;
+            width: 100%;
+        }
+    </style>
+    <div class="container dealer-wallpaper">
+        <div class="col-md-12">
+            <div class="pt-5 pb-3">
+                <h2><strong>Usuarios</strong></h2>
+            </div>
+            <div class="table-responsive d-flex align-items-center">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nombre de usuario</th>
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>Email</th>
+                            <th>Tel&eacute;fono</th>
+                            <th>Rol</th>
+    {#                        <th>Acciones</th>#}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr data-id="{{ user.id }}">
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.name }}</td>
+                                <td>{{ user.surname }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.telephone }}</td>
+                                <td>
+                                    {% if 'ROLE_ADMIN' in user.roles %}
+                                        <strong>Administrador</strong>
+                                    {% elseif 'ROLE_USER' in user.roles %}
+                                        <strong>Usuario</strong>
+                                    {% endif %}
+                                </td>
+                                {#<td class="actions">
+                                    <a href="{{ path('user_view', { id : user.id }) }}" class="btn btn-sm btn-info">View</a>
+                                    <a href="{{ path('user_edit', { id : user.id }) }}" class="btn btn-sm btn-primary">Edit</a>
+                                    <a href="#" class="btn btn-sm btn-danger btn-delete">Delete</a>
+                                </td>#}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

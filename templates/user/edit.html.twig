@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Registro{% endblock %}
+{% block title %}Editar usuario{% endblock %}
 
 {% block body %}
+    {{ parent() }}
+
     <section class="vh-100" style="background-color: #eee;">
         <div class="container h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
@@ -12,78 +14,63 @@
                             <div class="row justify-content-center">
                                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
-                                    <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Crear cuenta</p>
+                                    <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Editar usuario</p>
 
-                                    {{ form_start(registrationForm) }}
+                                    {{ form_start(form) }}
                                     <div class="mx-1 mx-md-4">
                                         <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                                             <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                                {{ form_widget(registrationForm.name) }}
-                                                <small class="form-text text-danger">{{ form_errors(registrationForm.name) }}</small>
+                                                {{ form_widget(form.name) }}
+                                                <small class="form-text text-danger">{{ form_errors(form.name) }}</small>
                                             </div>
                                         </div>
 
                                         <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                                             <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                                {{ form_widget(registrationForm.surname) }}
-                                                <small class="form-text text-danger">{{ form_errors(registrationForm.surname) }}</small>
+                                                {{ form_widget(form.surname) }}
+                                                <small class="form-text text-danger">{{ form_errors(form.surname) }}</small>
                                             </div>
                                         </div>
 
                                         <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-phone fa-lg me-3 fa-fw"></i>
                                             <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                                {{ form_widget(registrationForm.telephone) }}
-                                                <small class="form-text text-danger">{{ form_errors(registrationForm.telephone) }}</small>
+                                                {{ form_widget(form.telephone) }}
+                                                <small class="form-text text-danger">{{ form_errors(form.telephone) }}</small>
                                             </div>
                                         </div>
 
                                         <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-address-book fa-lg me-3 fa-fw"></i>
                                             <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                                {{ form_widget(registrationForm.username) }}
-                                                <small class="form-text text-danger">{{ form_errors(registrationForm.username) }}</small>
+                                                {{ form_widget(form.username) }}
+                                                <small class="form-text text-danger">{{ form_errors(form.username) }}</small>
                                             </div>
                                         </div>
 
                                         <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                                             <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                                {{ form_widget(registrationForm.email) }}
-                                                <small class="form-text text-danger">{{ form_errors(registrationForm.email) }}</small>
+                                                {{ form_widget(form.email) }}
+                                                <small class="form-text text-danger">{{ form_errors(form.email) }}</small>
                                             </div>
                                         </div>
 
                                         <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                                             <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                                {{ form_widget(registrationForm.plainPassword) }}
-                                                <small class="form-text text-danger">{{ form_errors(registrationForm.plainPassword) }}</small>
+                                                {{ form_widget(form.plainPassword) }}
+                                                <small class="form-text text-danger">{{ form_errors(form.plainPassword) }}</small>
                                             </div>
                                         </div>
-
-                                        {#<div class="d-flex flex-row align-items-center mb-4">
-                                            <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                                                <input type="password" id="password2" class="form-control requiredField" placeholder="Confirmar contraseña"/>
-                                                <small></small>
-                                            </div>
-                                        </div>#}
-
-                                        {# <div class="form-check d-flex justify-content-center mb-5">
-                                            <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
-                                            <label class="form-check-label" for="form2Example3">
-                                                I agree all statements in <a href="#!">Terms of service</a>
-                                            </label>
-                                        </div> #}
 
                                         <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                            <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-lg gradient-button">Crear cuenta</button>
+                                            <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-lg gradient-button">Editar usuario</button>
                                         </div>
                                     </div>
-                                    {{ form_end(registrationForm) }}
+                                    {{ form_end(form) }}
                                 </div>
                                 <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2 justify-content-center">
                                     <img src="{{asset('images/autoElite_logo.png')}}" class="img-fluid" alt="AutoElite logo" width="60%">

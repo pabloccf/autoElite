@@ -33,6 +33,51 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
+    public function getCurrentPassword($id)
+    {
+        $parameters = array();
+
+        $query =
+            'SELECT 
+                u.password
+            FROM 
+                users u
+            WHERE 
+                u.id = :id'
+        ;
+
+        $parameters['id'] = $id;
+
+        try {
+            $query = $this->getEntityManager()->getConnection()->prepare($query);
+            $query->executeQuery($parameters);
+            $currentPassword = $query->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
+        return $currentPassword;
+    }
+
+    public function update($user, $encodedPassword, $needPersist = false)
+    {
+        try {
+            $entityManager = $this->getEntityManager();
+
+            $user->setPassword($encodedPassword);
+
+            if ($needPersist) {
+                $entityManager->persist($user);
+            }
+
+            $entityManager->flush();
+        } catch (\Throwable $th) {
+            return false;
+        }
+
+        return true;
+    }
+
     //    /**
     //     * @return User[] Returns an array of User objects
     //     */

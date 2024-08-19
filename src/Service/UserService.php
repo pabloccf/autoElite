@@ -20,6 +20,13 @@ class UserService
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * Función que imprime todos los usuarios de la base de datos
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @return array
+     */
     public function getUsers()
     {
         $users = $this->userRepository->findAll();
@@ -32,6 +39,15 @@ class UserService
         );
     }
 
+    /**
+     * Función que recupera la contraseña del usuario
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $id
+     * @return array
+     * @throws \Throwable
+     */
     public function getCurrentPassword($id)
     {
         $result = $this->userRepository->getCurrentPassword($id);
@@ -44,6 +60,16 @@ class UserService
         );
     }
 
+    /**
+     * Función que actualiza la contraseña de un usuario
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $user
+     * @param $encodedPassword
+     * @param $needPersist
+     * @return array
+     */
     public function update($user, $encodedPassword, $needPersist = false)
     {
         $result = $this->userRepository->update($user, $encodedPassword, $needPersist);

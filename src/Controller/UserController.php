@@ -35,6 +35,10 @@ class UserController extends AbstractController
     }
 
     /**
+     * Función que renderiza la vista de la lista de usuarios
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
      * @return Response
      */
     #[Route('/user', name: 'list_user')]
@@ -46,10 +50,14 @@ class UserController extends AbstractController
     }
 
     /**
+     * Función que renderiza la vista de los datos de un usuario
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
      * @param $id
      * @return Response
      */
-    #[Route('/view/{id}', name: 'view_user')]
+    #[Route('/user/view/{id}', name: 'view_user')]
     public function view($id): Response
     {
         $user = $this->userRepository->find($id);
@@ -62,10 +70,14 @@ class UserController extends AbstractController
     }
 
     /**
+     * Función que renderiza la vista de editar un usuario
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
      * @param $id
      * @return Response
      */
-    #[Route('/edit/{id}', name: 'edit_user')]
+    #[Route('/user/edit/{id}', name: 'edit_user')]
     public function edit($id): Response
     {
         $user = $this->userRepository->find($id);
@@ -80,6 +92,10 @@ class UserController extends AbstractController
     }
 
     /**
+     * Función que crea el formulario de editar un usuario
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
      * @param User $user
      * @return FormInterface
      */
@@ -91,13 +107,17 @@ class UserController extends AbstractController
     }
 
     /**
+     * Función que procesa y edita un usuario
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
      * @param $id
      * @param Request $request
      * @return RedirectResponse|Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/update/{id}', name: 'update_user')]
+    #[Route('/user/update/{id}', name: 'update_user')]
     public function update($id, Request $request): RedirectResponse|Response
     {
         $user = $this->userRepository->find($id);

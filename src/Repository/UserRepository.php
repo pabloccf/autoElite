@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -33,11 +34,19 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
+    /**
+     * Función que recupera la contraseña de un usuario
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $id
+     * @return $currentPassword
+     * @throws Exception
+     * @throws \Throwable
+     */
     public function getCurrentPassword($id)
     {
-        $parameters = array();
-
-        $query =
+        $sql =
             'SELECT 
                 u.password
             FROM 
@@ -46,12 +55,13 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                 u.id = :id'
         ;
 
-        $parameters['id'] = $id;
+        $parameters = ['id' => $id];
 
         try {
-            $query = $this->getEntityManager()->getConnection()->prepare($query);
-            $query->executeQuery($parameters);
-            $currentPassword = $query->fetchAll(\PDO::FETCH_ASSOC);
+            $connection = $this->getEntityManager()->getConnection();
+            $query = $connection->prepare($sql);
+            $resultQuery = $query->executeQuery($parameters);
+            $currentPassword = $resultQuery->fetchAssociative();
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -59,6 +69,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $currentPassword;
     }
 
+    /**
+     * Función que actualiza la contraseña de un usuario
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $user
+     * @param $encodedPassword
+     * @param $needPersist
+     * @return bool
+     */
     public function update($user, $encodedPassword, $needPersist = false)
     {
         try {

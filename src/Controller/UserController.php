@@ -48,9 +48,9 @@ class UserController extends AbstractController
     {
         $result = $this->userService->getUsers();
 
-        $deleteFormAjax = $this->createCustomForm(':USER_ID', 'DELETE', 'delete_user');
+//        $deleteFormAjax = $this->createCustomForm(':USER_ID', 'DELETE', 'delete_user');
 
-        return $this->render('user/index.html.twig', array('users' => $result['data'], 'delete_form_ajax' => $deleteFormAjax->createView()));
+        return $this->render('user/index.html.twig', array('users' => $result['data']));
     }
 
     /**
@@ -67,7 +67,7 @@ class UserController extends AbstractController
         $user = $this->userRepository->find($id);
 
         if (!$user) {
-            throw $this->createNotFoundException('Usuario no encontrado');
+            throw $this->createNotFoundException('No se encontró el usuario con el id ' . $id);
         }
 
         $form = $this->createEditForm($user);
@@ -107,7 +107,7 @@ class UserController extends AbstractController
         $user = $this->userRepository->find($id);
 
         if (!$user) {
-            throw $this->createNotFoundException('Usuario no encontrado');
+            throw $this->createNotFoundException('No se encontró el usuario con el id ' . $id);
         }
 
         $form = $this->createEditForm($user);
@@ -141,46 +141,16 @@ class UserController extends AbstractController
      * @return JsonResponse|RedirectResponse|void
      */
     #[Route('/user/delete/{id}', name: 'delete_user', methods: ['POST', 'DELETE'])]
-    public function delete(Request $request, $id)
+    public function delete($id)
     {
         $user = $this->userRepository->find($id);
 
         if (!$user) {
-            if ($request->isXmlHttpRequest()) {
-                return new JsonResponse(['status' => false, 'statusCode' => 404, 'message' => 'Usuario no encontrado'], 404);
-            }
-            return $this->redirectToRoute('list_user');
+            throw $this->createNotFoundException('No se encontró el usuario con el id ' . $id);
         }
 
-        $form = $this->createCustomForm($user->getId(), 'DELETE', 'delete_user');
-        $form->handleRequest($request);
+        $this->userService->remove($user);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            if ($request->isXmlHttpRequest()) {
-                $result = $this->userService->remove($user);
-
-                return new JsonResponse($result, $result['statusCode'], array('Content-Type' => 'application/json'));
-            }
-
-            return $this->redirectToRoute('list_user');
-        }
-    }
-
-    /**
-     * Función que crea un formulario
-     *
-     * @author Pablo López Gosálvez <i92logop@uco.es>
-     *
-     * @param $id
-     * @param $method
-     * @param $route
-     * @return FormInterface
-     */
-    private function createCustomForm($id, $method, $route)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl($route, array('id' => $id)))
-            ->setMethod($method)
-            ->getForm();
+        return $this->redirectToRoute('list_user');
     }
 }

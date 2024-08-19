@@ -48,61 +48,24 @@ class UserController extends AbstractController
     {
         $result = $this->userService->getUsers();
 
-//        $deleteFormAjax = $this->createCustomForm(':USER_ID', 'DELETE', 'delete_user');
-
         return $this->render('user/index.html.twig', array('users' => $result['data']));
     }
+
 
     /**
      * Función que renderiza la vista de editar un usuario
      *
-     * @author Pablo López Gosálvez <i92logop@uco.es>
-     *
-     * @param $id
-     * @return Response
-     */
-    #[Route('/user/edit/{id}', name: 'edit_user')]
-    public function edit($id): Response
-    {
-        $user = $this->userRepository->find($id);
-
-        if (!$user) {
-            throw $this->createNotFoundException('No se encontró el usuario con el id ' . $id);
-        }
-
-        $form = $this->createEditForm($user);
-
-        return $this->render('user/edit.html.twig', array('user' => $user, 'form' => $form->createView()));
-    }
-
-    /**
-     * Función que crea el formulario de editar un usuario
-     *
-     * @author Pablo López Gosálvez <i92logop@uco.es>
-     *
-     * @param User $user
-     * @return FormInterface
-     */
-    private function createEditForm(User $user): \Symfony\Component\Form\FormInterface
-    {
-        return $this->createForm(RegistrationFormType::class, $user,
-            array('action' => $this->generateUrl('update_user', array('id' => $user->getId())), 'method' => 'PUT'))
-        ;
-    }
-
-    /**
-     * Función que procesa y edita un usuario
-     *
-     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *@author Pablo López Gosálvez <i92logop@uco.es>
      *
      * @param $id
      * @param Request $request
-     * @return RedirectResponse|Response
+     * @return Response
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws \Throwable
      */
-    #[Route('/user/update/{id}', name: 'update_user', methods: ['POST', 'PUT'])]
-    public function update($id, Request $request): RedirectResponse|Response
+    #[Route('/user/edit/{id}', name: 'edit_user')]
+    public function edit($id, Request $request): Response
     {
         $user = $this->userRepository->find($id);
 
@@ -110,7 +73,7 @@ class UserController extends AbstractController
             throw $this->createNotFoundException('No se encontró el usuario con el id ' . $id);
         }
 
-        $form = $this->createEditForm($user);
+        $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -3,15 +3,7 @@
 {% block title %}Registro{% endblock %}
 
 {% block body %}
-    <style>
-        .gradient-button {
-            background: rgb(34,182,195);
-            background: linear-gradient(90deg, rgba(34,182,195,1) 0%, rgba(57,193,16,1) 100%);
-            background: -webkit-linear-gradient(90deg, rgba(34,182,195,1) 0%, rgba(57,193,16,1) 100%);
-            color: white;
-            font-weight: bold;
-        }
-    </style>
+    {{ parent() }}
 
     <section class="vh-100" style="background-color: #eee;">
         <div class="container h-100">

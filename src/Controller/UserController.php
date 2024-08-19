@@ -85,10 +85,9 @@ class UserController extends AbstractController
      */
     private function createEditForm(User $user): \Symfony\Component\Form\FormInterface
     {
-        $form = $this->createForm(RegistrationFormType::class, $user,
-            array('action' => $this->generateUrl('update_user', array('id' => $user->getId())), 'method' => 'PUT'));
-
-        return $form;
+        return $this->createForm(RegistrationFormType::class, $user,
+            array('action' => $this->generateUrl('update_user', array('id' => $user->getId())), 'method' => 'PUT'))
+        ;
     }
 
     /**

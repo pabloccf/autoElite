@@ -10,11 +10,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
 class UserController extends AbstractController
 {
@@ -46,27 +48,9 @@ class UserController extends AbstractController
     {
         $result = $this->userService->getUsers();
 
-        return $this->render('user/index.html.twig', array('users' => $result['data']));
-    }
+        $deleteFormAjax = $this->createCustomForm(':USER_ID', 'DELETE', 'delete_user');
 
-    /**
-     * Función que renderiza la vista de los datos de un usuario
-     *
-     * @author Pablo López Gosálvez <i92logop@uco.es>
-     *
-     * @param $id
-     * @return Response
-     */
-    #[Route('/user/view/{id}', name: 'view_user')]
-    public function view($id): Response
-    {
-        $user = $this->userRepository->find($id);
-
-        if (!$user) {
-            throw $this->createNotFoundException('Usuario no encontrado');
-        }
-
-        return $this->render('user/view.html.twig', array('user' => $user));
+        return $this->render('user/index.html.twig', array('users' => $result['data'], 'delete_form_ajax' => $deleteFormAjax->createView()));
     }
 
     /**
@@ -117,7 +101,7 @@ class UserController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/user/update/{id}', name: 'update_user')]
+    #[Route('/user/update/{id}', name: 'update_user', methods: ['POST', 'PUT'])]
     public function update($id, Request $request): RedirectResponse|Response
     {
         $user = $this->userRepository->find($id);
@@ -130,7 +114,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $password = $form->get('password')->getData();
+            $password = $form->get('plainPassword')->getData();
 
             if (!empty($password)) {
                 $encoder = $this->container->get('security.password_encoder');
@@ -146,5 +130,57 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/edit.html.twig', array('user' => $user, 'form' => $form->createView()));
+    }
+
+    /**
+     * Función que elimina un usuario
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse|RedirectResponse|void
+     */
+    #[Route('/user/delete/{id}', name: 'delete_user', methods: ['POST', 'DELETE'])]
+    public function delete(Request $request, $id)
+    {
+        $user = $this->userRepository->find($id);
+
+        if (!$user) {
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse(['status' => false, 'statusCode' => 404, 'message' => 'Usuario no encontrado'], 404);
+            }
+            return $this->redirectToRoute('list_user');
+        }
+
+        $form = $this->createCustomForm($user->getId(), 'DELETE', 'delete_user');
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($request->isXmlHttpRequest()) {
+                $result = $this->userService->remove($user);
+
+                return new JsonResponse($result, $result['statusCode'], array('Content-Type' => 'application/json'));
+            }
+
+            return $this->redirectToRoute('list_user');
+        }
+    }
+
+    /**
+     * Función que crea un formulario
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $id
+     * @param $method
+     * @param $route
+     * @return FormInterface
+     */
+    private function createCustomForm($id, $method, $route)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl($route, array('id' => $id)))
+            ->setMethod($method)
+            ->getForm();
     }
 }

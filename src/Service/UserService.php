@@ -90,4 +90,34 @@ class UserService
             'data' => null
         );
     }
+
+    public function remove($user)
+    {
+        if ($user->getRoles() == 'ROLE_ADMIN') {
+            return array(
+                'status' => false,
+                'statusCode' => 400,
+                'message' => 'El usuario no se puede eliminar',
+                'data' => null
+            );
+        }
+
+        $result = $this->userRepository->remove($user);
+
+        if (!$result) {
+            return array(
+                'status' => false,
+                'statusCode' => 400,
+                'message' => 'El usuario no se puede eliminar',
+                'data' => null
+            );
+        }
+
+        return array(
+            'status' => true,
+            'statusCode' => 200,
+            'message' => 'El usuario se ha eliminado correctamente',
+            'data' => null
+        );
+    }
 }

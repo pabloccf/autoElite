@@ -93,7 +93,7 @@ class UserService
 
     public function remove($user)
     {
-        if ($user->getRole() == 'ROLE_ADMIN') {
+        if ($user->getRoles() == 'ROLE_ADMIN') {
             return array(
                 'status' => false,
                 'statusCode' => 400,

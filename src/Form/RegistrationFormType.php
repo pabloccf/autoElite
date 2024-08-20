@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,8 +19,20 @@ use Symfony\Component\Validator\Constraints\Regex;
 
 class RegistrationFormType extends AbstractType
 {
+    private bool $isEdit;
+
+    /**
+     * @param bool $isEdit
+     */
+    public function __construct(bool $isEdit = false)
+    {
+        $this->isEdit = $isEdit;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $isEdit = $options['isEdit'];
+
         $builder
             ->add('name', TextType::class, [
                 'required' => false,
@@ -92,7 +105,7 @@ class RegistrationFormType extends AbstractType
                     'class' => 'form-control'
                 ],
                 'label' => false,
-                'constraints' => [
+                'constraints' => $isEdit ? [] : [
                     new NotBlank(['message' => 'Este campo no puede estar vacío']),
                     new Length([
                         'min' => 6,
@@ -106,6 +119,9 @@ class RegistrationFormType extends AbstractType
                     ])
                 ]
             ])
+            ->add('send', SubmitType::class, [
+                'attr' => ['class' => 'btn btn-lg gradient-button']
+            ])
         ;
     }
 
@@ -113,6 +129,7 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'isEdit' => false,
         ]);
     }
 }

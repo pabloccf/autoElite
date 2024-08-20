@@ -67,7 +67,7 @@
                                         </div>
 
                                         <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                            <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-lg gradient-button">Crear cuenta</button>
+                                            {{ form_widget(registrationForm.send, { 'label': 'Crear Cuenta' }) }}
                                         </div>
                                     </div>
                                     {{ form_end(registrationForm) }}

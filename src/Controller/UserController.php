@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
@@ -24,16 +25,18 @@ class UserController extends AbstractController
     private UserService $userService;
     private EntityManagerInterface $entityManager;
     private UserRepository $userRepository;
+    private UserPasswordHasherInterface $passwordHasher;
 
     /**
      * @param UserService $userService
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(UserService $userService, EntityManagerInterface $entityManager, UserRepository $userRepository)
+    public function __construct(UserService $userService, EntityManagerInterface $entityManager, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher)
     {
         $this->userService = $userService;
         $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;
+        $this->passwordHasher = $passwordHasher;
     }
 
     /**
@@ -73,15 +76,14 @@ class UserController extends AbstractController
             throw $this->createNotFoundException('No se encontró el usuario con el id ' . $id);
         }
 
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(RegistrationFormType::class, $user, ['isEdit' => true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $password = $form->get('plainPassword')->getData();
 
             if (!empty($password)) {
-                $encoder = $this->container->get('security.password_encoder');
-                $encoded = $encoder->encodePassword($user, $password);
+                $encoded = $this->passwordHasher->hashPassword($user, $password);
             } else {
                 $result = $this->userService->getCurrentPassword($id);
                 $encoded = $result['data'][0]['password'];
@@ -99,12 +101,12 @@ class UserController extends AbstractController
      * Función que elimina un usuario
      *
      * @author Pablo López Gosálvez <i92logop@uco.es>
-     * @param Request $request
+     *
      * @param $id
-     * @return JsonResponse|RedirectResponse|void
+     * @return RedirectResponse
      */
     #[Route('/user/delete/{id}', name: 'delete_user', methods: ['POST', 'DELETE'])]
-    public function delete($id)
+    public function delete($id): RedirectResponse
     {
         $user = $this->userRepository->find($id);
 

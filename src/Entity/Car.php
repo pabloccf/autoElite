@@ -53,6 +53,10 @@ class Car
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $extras = null;
 
+    #[ORM\ManyToOne(inversedBy: 'cars')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?CarModel $carModel = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -210,6 +214,18 @@ class Car
     public function setExtras(?string $extras): static
     {
         $this->extras = $extras;
+
+        return $this;
+    }
+
+    public function getCarModel(): ?CarModel
+    {
+        return $this->carModel;
+    }
+
+    public function setCarModel(?CarModel $carModel): static
+    {
+        $this->carModel = $carModel;
 
         return $this;
     }

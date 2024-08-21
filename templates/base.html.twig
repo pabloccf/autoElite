@@ -31,6 +31,10 @@
                     font-weight: bold;
                 }
             </style>
+
+            {% if app.request.attributes.get('_route') != 'app_login' %}
+                    {% include 'navbar.html.twig'%}
+            {% endif %}
         {% endblock %}
     </body>
 </html>

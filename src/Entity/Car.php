@@ -57,6 +57,9 @@ class Car
     #[ORM\JoinColumn(nullable: false)]
     private ?CarModel $carModel = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $manufacture_year = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -226,6 +229,18 @@ class Car
     public function setCarModel(?CarModel $carModel): static
     {
         $this->carModel = $carModel;
+
+        return $this;
+    }
+
+    public function getManufactureYear(): ?int
+    {
+        return $this->manufacture_year;
+    }
+
+    public function setManufactureYear(?int $manufacture_year): static
+    {
+        $this->manufacture_year = $manufacture_year;
 
         return $this;
     }

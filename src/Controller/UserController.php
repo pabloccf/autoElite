@@ -30,6 +30,8 @@ class UserController extends AbstractController
     /**
      * @param UserService $userService
      * @param EntityManagerInterface $entityManager
+     * @param UserRepository $userRepository
+     * @param UserPasswordHasherInterface $passwordHasher
      */
     public function __construct(UserService $userService, EntityManagerInterface $entityManager, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher)
     {

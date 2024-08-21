@@ -50,7 +50,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             'SELECT 
                 u.password
             FROM 
-                users u
+                user u
             WHERE 
                 u.id = :id'
         ;

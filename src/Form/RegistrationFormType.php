@@ -19,16 +19,6 @@ use Symfony\Component\Validator\Constraints\Regex;
 
 class RegistrationFormType extends AbstractType
 {
-    private bool $isEdit;
-
-    /**
-     * @param bool $isEdit
-     */
-    public function __construct(bool $isEdit = false)
-    {
-        $this->isEdit = $isEdit;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $isEdit = $options['isEdit'];

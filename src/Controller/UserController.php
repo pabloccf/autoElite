@@ -86,7 +86,7 @@ class UserController extends AbstractController
                 $encoded = $this->passwordHasher->hashPassword($user, $password);
             } else {
                 $result = $this->userService->getCurrentPassword($id);
-                $encoded = $result['data'][0]['password'];
+                $encoded = $result['data']['password'];
             }
 
             $this->userService->update($user, $encoded);

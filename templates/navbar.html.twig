@@ -6,13 +6,13 @@
         </a>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav d-flex flex-row fs-5">
-                {% if 'ROLE_ADMIN' in app.user.roles %}
+                {% if app.user is not null and 'ROLE_ADMIN' in app.user.roles %}
                     <li class="nav-item">
                         <a class="nav-link" href="/user">Usuarios</a>
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Coches</a>
+                    <a class="nav-link" href="/car">Coches</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Ventas</a>

@@ -60,6 +60,44 @@ class Car
     #[ORM\Column(nullable: true)]
     private ?int $manufacture_year = null;
 
+    /**
+     * @param int|null $id
+     * @param string|null $colour
+     * @param string|null $plate
+     * @param string|null $vin
+     * @param string|null $fuel
+     * @param int|null $cylinders
+     * @param int|null $power
+     * @param int|null $kilometers
+     * @param int|null $doors
+     * @param string|null $status
+     * @param int|null $previous_owners
+     * @param \DateTimeInterface|null $registration_date
+     * @param bool|null $needs_repair
+     * @param string|null $extras
+     * @param CarModel|null $carModel
+     * @param int|null $manufacture_year
+     */
+    public function __construct(?int $id = null, ?string $colour = null, ?string $plate = null, ?string $vin = null, ?string $fuel = null, ?int $cylinders = null, ?int $power = null, ?int $kilometers = null, ?int $doors = null, ?string $status = null, ?int $previous_owners = null, ?\DateTimeInterface $registration_date = null, ?bool $needs_repair = null, ?string $extras = null, ?CarModel $carModel = null, ?int $manufacture_year = null)
+    {
+        $this->id = $id;
+        $this->colour = $colour;
+        $this->plate = $plate;
+        $this->vin = $vin;
+        $this->fuel = $fuel;
+        $this->cylinders = $cylinders;
+        $this->power = $power;
+        $this->kilometers = $kilometers;
+        $this->doors = $doors;
+        $this->status = $status;
+        $this->previous_owners = $previous_owners;
+        $this->registration_date = $registration_date;
+        $this->needs_repair = $needs_repair;
+        $this->extras = $extras;
+        $this->carModel = $carModel;
+        $this->manufacture_year = $manufacture_year;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

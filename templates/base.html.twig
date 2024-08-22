@@ -32,7 +32,10 @@
                 }
             </style>
 
-            {% if app.request.attributes.get('_route') != 'app_login' %}
+            {% if app.request.attributes.get('_route') != 'app_login' and
+                app.request.attributes.get('_route') != 'app_register' and
+                app.request.attributes.get('_route') != 'add_car'
+            %}
                     {% include 'navbar.html.twig'%}
             {% endif %}
         {% endblock %}

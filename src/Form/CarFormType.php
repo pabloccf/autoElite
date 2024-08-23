@@ -15,6 +15,9 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class CarFormType extends AbstractType
 {
@@ -39,7 +42,14 @@ class CarFormType extends AbstractType
                 ],
                 'label' => 'Matrícula:',
                 'label_attr' => [
-                    'class' => 'pb-2'
+                    'class' => 'form-label'
+                ],
+                'constraints' => [
+                    new NotBlank(['message' => 'Este campo no puede estar vacío.']),
+                    new Regex([
+                        'pattern' => '^\d{4}\s?[BCDFGHJKLMNPRSTVWXYZ]{3}$',
+                        'message' => 'Formato de matrícula incorrecto. Formato correcto: 1234BCD.'
+                    ])
                 ]
             ])
             ->add('vin', TextType::class, [
@@ -50,7 +60,10 @@ class CarFormType extends AbstractType
                 ],
                 'label' => 'VIN:',
                 'label_attr' => [
-                    'class' => 'pb-2'
+                    'class' => 'form-label'
+                ],
+                'constraints' => [
+                    new NotBlank(['message' => 'Este campo no puede estar vacío.'])
                 ]
             ])
             ->add('fuel', ChoiceType::class, [
@@ -60,13 +73,16 @@ class CarFormType extends AbstractType
                 ],
                 'label' => 'Combustible:',
                 'label_attr' => [
-                    'class' => 'pb-2'
+                    'class' => 'form-label'
                 ],
                 'choices' => [
                     'Gasolina' => 'Gasolina',
                     'Diésel' => 'Diésel',
                     'Electricidad' => 'Electricidad',
                     'Híbridos' => 'Híbridos'
+                ],
+                'constraints' => [
+                    new NotBlank(['message' => 'Este campo no puede estar vacío.'])
                 ]
             ])
             ->add('cylinders', IntegerType::class, [
@@ -77,7 +93,10 @@ class CarFormType extends AbstractType
                 ],
                 'label' => 'Cilindros:',
                 'label_attr' => [
-                    'class' => 'pb-2'
+                    'class' => 'form-label'
+                ],
+                'constraints' => [
+                    new NotBlank(['message' => 'Este campo no puede estar vacío.'])
                 ]
             ])
             ->add('power', IntegerType::class, [
@@ -88,7 +107,10 @@ class CarFormType extends AbstractType
                 ],
                 'label' => 'Potencia:',
                 'label_attr' => [
-                    'class' => 'pb-2'
+                    'class' => 'form-label'
+                ],
+                'constraints' => [
+                    new NotBlank(['message' => 'Este campo no puede estar vacío.'])
                 ]
             ])
             ->add('kilometers', IntegerType::class, [
@@ -99,7 +121,7 @@ class CarFormType extends AbstractType
                 ],
                 'label' => 'Kilometros:',
                 'label_attr' => [
-                    'class' => 'pb-2'
+                    'class' => 'form-label'
                 ]
             ])
             ->add('doors', IntegerType::class, [
@@ -110,7 +132,10 @@ class CarFormType extends AbstractType
                 ],
                 'label' => 'Número de puertas:',
                 'label_attr' => [
-                    'class' => 'pb-2'
+                    'class' => 'form-label'
+                ],
+                'constraints' => [
+                    new NotBlank(['message' => 'Este campo no puede estar vacío.'])
                 ]
             ])
             ->add('status', ChoiceType::class, [
@@ -120,11 +145,14 @@ class CarFormType extends AbstractType
                 ],
                 'label' => 'Estado:',
                 'label_attr' => [
-                    'class' => 'pb-2'
+                    'class' => 'form-label'
                 ],
                 'choices' => [
                     'Nuevo' => 'Nuevo',
                     '2ª mano' => '2ª mano'
+                ],
+                'constraints' => [
+                    new NotBlank(['message' => 'Este campo no puede estar vacío.'])
                 ]
             ])
             ->add('previous_owners', IntegerType::class, [
@@ -135,11 +163,23 @@ class CarFormType extends AbstractType
                 ],
                 'label' => 'Número de dueños anteriores:',
                 'label_attr' => [
-                    'class' => 'pb-2'
+                    'class' => 'form-label'
                 ]
             ])
             ->add('registration_date', DateType::class, [
                 'widget' => 'single_text',
+                'required' => false,
+                'format' => 'yyyy-MM-dd',
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+                'label' => 'Fecha de matriculación:',
+                'label_attr' => [
+                    'class' => 'form-label'
+                ],
+                'constraints' => [
+                    new NotBlank(['message' => 'Este campo no puede estar vacío.'])
+                ]
             ])
             ->add('needs_repair', CheckboxType::class, [
                 'required' => false,
@@ -159,7 +199,7 @@ class CarFormType extends AbstractType
                 ],
                 'label' => 'Extras:',
                 'label_attr' => [
-                    'class' => 'pb-2'
+                    'class' => 'form-label'
                 ]
             ])
             ->add('manufacture_year', IntegerType::class, [
@@ -170,7 +210,15 @@ class CarFormType extends AbstractType
                 ],
                 'label' => 'Año de fabricación:',
                 'label_attr' => [
-                    'class' => 'pb-2'
+                    'class' => 'form-label'
+                ],
+                'constraints' => [
+                    new NotBlank(['message' => 'Este campo no puede estar vacío.']),
+                    new Range([
+                        'min' => 1980,
+                        'max' => date('Y'),
+                        'notInRangeMessage' => 'Por favor, introduce un año entre el {{ min }} y el {{ max }}.'
+                    ])
                 ]
             ])
             ->add('carModel', EntityType::class, [
@@ -182,7 +230,10 @@ class CarFormType extends AbstractType
                 ],
                 'label' => 'Modelo:',
                 'label_attr' => [
-                    'class' => 'pb-2'
+                    'class' => 'form-label'
+                ],
+                'constraints' => [
+                    new NotBlank(['message' => 'Este campo no puede estar vacío.'])
                 ]
             ])
             ->add('send', SubmitType::class, [

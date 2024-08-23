@@ -34,10 +34,21 @@ class CarModel
     #[ORM\JoinColumn(nullable: false)]
     private ?CarBrand $carBrand = null;
 
-    public function __construct()
+    /**
+     * @param int|null $id
+     * @param string|null $name
+     * @param string|null $body_type
+     * @param string|null $image
+     */
+    public function __construct(?int $id = null, ?string $name = null, ?string $body_type = null, ?string $image = null)
     {
+        $this->id = $id;
+        $this->name = $name;
+        $this->body_type = $body_type;
+        $this->image = $image;
         $this->cars = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {

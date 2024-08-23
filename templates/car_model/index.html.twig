@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modelos de coches{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+    <style>
+        .dealer-wallpaper {
+            background-image: url("{{ asset('images/fondoConcesionario.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .table-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            padding-top: 0px;
+            margin: 20px;
+            width: 80%;
+        }
+    </style>
+
+    <div class="container-fluid dealer-wallpaper">
+        <div class="col-md-12 table-container">
+            <div class="pt-5 pb-3 d-flex">
+                <h2 class="ms-5" style="text-align: left"><strong>Modelos de coches</strong></h2>
+                <a href="{{ path('add_car_model') }}" class="btn btn-lg btn-success ms-auto fw-bold">Añadir &nbsp;<i class="fa-solid fa-car"></i></a>
+            </div>
+            {#<div class="table-responsive d-flex align-items-center">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Matr&iacute;cula</th>
+                        <th>Combustible</th>
+                        <th>Potencia</th>
+                        <th>Año de fabricaci&oacute;n</th>
+            #}{#                        <th>Acciones</th>#}{#
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr data-id="{{ user.id }}">
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.surname }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.telephone }}</td>
+                    <td>
+                        {% if 'ROLE_ADMIN' in user.roles %}
+                            <strong>Administrador</strong>
+                        {% elseif 'ROLE_USER' in user.roles %}
+                            <strong>Usuario</strong>
+                        {% endif %}
+                    </td>
+            #}{#<td class="actions">
+                                <a href="{{ path('edit_user', { id : user.id }) }}" class="btn btn-sm btn-warning fa-solid fa-user-pen"></a>
+                                <a href="javascript:void(0)" class="btn btn-sm btn-danger fa-solid fa-user-slash"
+                                   onclick="confirmSweet('¿Estás seguro de eliminar el usuario?', '{{ path('delete_user', { id: user.id }) }}', '{{ csrf_token('delete_user' ~ user.id) }}')">
+                                </a>
+                            </td>#}{#
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>#}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {#<script>
+        window.confirmSweet = function (pregunta, ruta, csfrToken) {
+            Swal.fire({
+                title: pregunta,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(ruta, {
+                        method: 'DELETE', // O 'POST' si prefieres ese método
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csfrToken
+                        },
+                    }).then(response => {
+                        if (response.ok) {
+                            Swal.fire({
+                                title: 'Usuario eliminado',
+                                icon: 'success',
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                window.location.href = '{{ path('list_user') }}';
+                            });
+                        } else {
+                            Swal.fire('Error', 'Hubo un problema al eliminar el usuario.', 'error');
+                        }
+                    }).catch(error => {
+                        Swal.fire('Error', 'Ocurrió un error inesperado.', 'error');
+                    });
+                }
+            });
+        }
+    </script>#}
+{% endblock %}

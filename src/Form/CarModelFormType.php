@@ -25,7 +25,7 @@ class CarModelFormType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ],
-                'label' => 'Nombre:',
+                'label' => 'Nombre del modelo:',
                 'label_attr' => [
                     'class' => 'form-label'
                 ],
@@ -38,6 +38,9 @@ class CarModelFormType extends AbstractType
                 'label' => 'Carrocería:',
                 'label_attr' => [
                     'class' => 'form-label'
+                ],
+                'attr' => [
+                    'class' => 'form-select'
                 ],
                 'choices' => [
                     'Sedán' => 'Sedán',
@@ -59,6 +62,9 @@ class CarModelFormType extends AbstractType
                 'label_attr' => [
                     'class' => 'form-label'
                 ],
+                'attr' => [
+                    'class' => 'form-control'
+                ],
                 'mapped' => false,
                 'constraints' => [
                     new File([
@@ -79,6 +85,9 @@ class CarModelFormType extends AbstractType
                 'label' => 'Marca:',
                 'label_attr' => [
                     'class' => 'form-label'
+                ],
+                'attr' => [
+                    'class' => 'form-select'
                 ],
                 'constraints' => [
                     new NotBlank(['message' => 'Este campo no puede estar vacío.'])

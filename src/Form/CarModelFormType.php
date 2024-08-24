@@ -63,7 +63,8 @@ class CarModelFormType extends AbstractType
                     'class' => 'form-label'
                 ],
                 'attr' => [
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'accept' => '.jpg, .jpeg, .png'
                 ],
                 'mapped' => false,
                 'constraints' => [

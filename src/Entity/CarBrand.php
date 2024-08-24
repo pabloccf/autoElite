@@ -27,8 +27,16 @@ class CarBrand
     #[ORM\OneToMany(targetEntity: CarModel::class, mappedBy: 'carBrand', orphanRemoval: true)]
     private Collection $carModels;
 
-    public function __construct()
+    /**
+     * @param int|null $id
+     * @param string|null $name
+     * @param string|null $logo
+     */
+    public function __construct(?int $id = null, ?string $name = null, ?string $logo = null)
     {
+        $this->id = $id;
+        $this->name = $name;
+        $this->logo = $logo;
         $this->carModels = new ArrayCollection();
     }
 

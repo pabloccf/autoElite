@@ -44,7 +44,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      * @throws Exception
      * @throws \Throwable
      */
-    public function getCurrentPassword($id)
+    public function getCurrentPassword($id): array|bool
     {
         $sql =
             'SELECT 
@@ -79,7 +79,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      * @param $needPersist
      * @return bool
      */
-    public function update($user, $encodedPassword, $needPersist = false)
+    public function update($user, $encodedPassword, $needPersist = false): bool
     {
         try {
             $entityManager = $this->getEntityManager();
@@ -98,7 +98,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return true;
     }
 
-    public function remove($user) {
+    /**
+     * Función que elimina un usuario de la base de datos
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $user
+     * @return bool
+     */
+    public function remove($user): bool
+    {
         try {
             $entityManager = $this->getEntityManager();
 

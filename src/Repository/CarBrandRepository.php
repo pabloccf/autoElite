@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\CarBrand;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -11,9 +12,37 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CarBrandRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private EntityManagerInterface $entityManager;
+
+    /**
+     * @param ManagerRegistry $registry
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(ManagerRegistry $registry,EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, CarBrand::class);
+        $this->entityManager = $entityManager;
+    }
+
+
+    /**
+     * Función que elimina una marca de coche
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $carBrand
+     * @return bool
+     */
+    public function remove($carBrand): bool
+    {
+        try {
+            $this->entityManager->remove($carBrand);
+            $this->entityManager->flush();
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return true;
     }
 
     //    /**

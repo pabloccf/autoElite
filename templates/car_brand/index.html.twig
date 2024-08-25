@@ -40,7 +40,7 @@
                     <tr>
                         <th>Nombre de la marca</th>
                         <th>Logo</th>
-{#                        <th>Acciones</th>#}
+                        <th>Acciones</th>
             </tr>
             </thead>
             <tbody>
@@ -50,12 +50,11 @@
                     <td>
                         <img src="{{ asset('uploads/logos/' ~ carBrand.logo) }}" alt="{{ carBrand.name }} logo" style="width: 100px; height: auto;">
                     </td>
-                    {#<td class="actions">
-                        <a href="{{ path('edit_user', { id : user.id }) }}" class="btn btn-sm btn-warning fa-solid fa-user-pen"></a>
-                        <a href="javascript:void(0)" class="btn btn-sm btn-danger fa-solid fa-user-slash"
-                           onclick="confirmSweet('¿Estás seguro de eliminar el usuario?', '{{ path('delete_user', { id: user.id }) }}', '{{ csrf_token('delete_user' ~ user.id) }}')">
+                    <td class="actions">
+                        <a href="javascript:void(0)" class="btn btn-sm btn-danger fa-solid fa-trash"
+                           onclick="confirmSweet('¿Estás seguro de eliminar la marca de coche?', '{{ path('delete_car_brand', { id: carBrand.id }) }}', '{{ csrf_token('delete_car_brand' ~ carBrand.id) }}')">
                         </a>
-                    </td>#}
+                    </td>
                 </tr>
         {% endfor %}
         </tbody>
@@ -68,7 +67,7 @@
 {% block javascripts %}
     {{ parent() }}
 
-    {#<script>
+    <script>
         window.confirmSweet = function (pregunta, ruta, csfrToken) {
             Swal.fire({
                 title: pregunta,
@@ -90,15 +89,15 @@
                     }).then(response => {
                         if (response.ok) {
                             Swal.fire({
-                                title: 'Usuario eliminado',
+                                title: 'Marca eliminada correctamente',
                                 icon: 'success',
                                 timer: 2000,
                                 showConfirmButton: false
                             }).then(() => {
-                                window.location.href = '{{ path('list_user') }}';
+                                window.location.href = '{{ path('list_car_brand') }}';
                             });
                         } else {
-                            Swal.fire('Error', 'Hubo un problema al eliminar el usuario.', 'error');
+                            Swal.fire('Error', 'Hubo un problema al eliminar la marca de coche.', 'error');
                         }
                     }).catch(error => {
                         Swal.fire('Error', 'Ocurrió un error inesperado.', 'error');
@@ -106,5 +105,5 @@
                 }
             });
         }
-    </script>#}
+    </script>
 {% endblock %}

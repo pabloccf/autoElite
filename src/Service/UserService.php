@@ -27,7 +27,7 @@ class UserService
      *
      * @return array
      */
-    public function getUsers()
+    public function getUsers(): array
     {
         $users = $this->userRepository->findAll();
 
@@ -48,7 +48,7 @@ class UserService
      * @return array
      * @throws \Throwable
      */
-    public function getCurrentPassword($id)
+    public function getCurrentPassword($id): array
     {
         $result = $this->userRepository->getCurrentPassword($id);
 
@@ -70,7 +70,7 @@ class UserService
      * @param $needPersist
      * @return array
      */
-    public function update($user, $encodedPassword, $needPersist = false)
+    public function update($user, $encodedPassword, $needPersist = false): array
     {
         $result = $this->userRepository->update($user, $encodedPassword, $needPersist);
 
@@ -91,7 +91,15 @@ class UserService
         );
     }
 
-    public function remove($user)
+    /**
+     * Función que elimina un usuario
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $user
+     * @return array
+     */
+    public function remove($user): array
     {
         if ($user->getRoles() == 'ROLE_ADMIN') {
             return array(

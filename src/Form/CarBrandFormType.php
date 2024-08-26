@@ -43,18 +43,20 @@ class CarBrandFormType extends AbstractType
                     'accept' => '.svg, .jpg, .jpeg, .png'
                 ],
                 'mapped' => false,
-                'constraints' => $isEdit ? [] : [
-                    new NotBlank(['message' => 'Este campo no puede estar vacío.']),
-                    new File([
-                        'maxSize' => '1024k',
-                        'mimeTypes' => [
-                            'image/jpeg',
-                            'image/png',
-                            'image/svg+xml'
-                        ],
-                        'mimeTypesMessage' => 'Por favor, adjunte una imagen SVG, JPEG o PNG válida.'
-                    ])
-                ]
+                'constraints' => array_merge(
+                    $isEdit ? [] : [new NotBlank(['message' => 'Este campo no puede estar vacío.'])],
+                    [
+                        new File([
+                            'maxSize' => '1024k',
+                            'mimeTypes' => [
+                                'image/jpeg',
+                                'image/png',
+                                'image/svg+xml'
+                            ],
+                            'mimeTypesMessage' => 'Por favor, adjunte una imagen SVG, JPEG o PNG válida.'
+                        ])
+                    ]
+                )
             ])
             ->add('send', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-lg gradient-button']

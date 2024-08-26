@@ -22,6 +22,7 @@ class CarBrandController extends AbstractController
     /**
      * @param EntityManagerInterface $entityManager
      * @param CarBrandService $carBrandService
+     * @param CarBrandRepository $carBrandRepository
      */
     public function __construct(EntityManagerInterface $entityManager, CarBrandService $carBrandService, CarBrandRepository $carBrandRepository)
     {
@@ -86,6 +87,47 @@ class CarBrandController extends AbstractController
         }
 
         return $this->render('car_brand/add.html.twig', ['carBrandForm' => $form->createView()]);
+    }
+
+    /**
+     * Función que renderiza la vista de editar los datos de una marca de coche
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $id
+     * @param Request $request
+     * @return RedirectResponse|Response
+     */
+    #[Route('car/brand/edit/{id}', name: 'edit_car_brand')]
+    public function edit($id, Request $request): RedirectResponse|Response
+   {
+        $carBrand = $this->carBrandRepository->find($id);
+
+        if (!$carBrand) {
+            throw $this->createNotFoundException('No se encontró la marca con el id ' . $id);
+        }
+
+        $form = $this->createForm(CarBrandFormType::class, $carBrand, ['isEdit' => true]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $carBrandName = $form->get('name')->getData();
+
+            $logoFile = $form->get('logo')->getData();
+            if ($logoFile) {
+                $brandName = preg_replace('/[^a-zA-Z0-9-_\.]/', '_', $carBrandName);
+                $newFileName = $brandName.'.'.$logoFile->guessExtension();
+
+                $logoFile->move($this->getParameter('logos_directory'), $newFileName);
+                $carBrand->setLogo($newFileName);
+            }
+
+            $this->carBrandService->update($carBrand);
+
+            return $this->redirectToRoute('list_car_brand');
+        }
+
+        return $this->render('car_brand/edit.html.twig', array('carBrand' => $carBrand, 'carBrandForm' => $form->createView()));
     }
 
     /**

@@ -29,13 +29,43 @@ class CarBrandService
      */
     public function getCarBrands(): array
     {
-        $carBrands = $this->carBrandRepository->findAll();
+        $carBrands = $this->carBrandRepository->findAllNotDeleted();
 
         return array(
             'status' => true,
             'statusCode' => 200,
             'message' => "",
             'data' => $carBrands
+        );
+    }
+
+    /**
+     * Función que edita los datos de una marca de coche
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $carBrand
+     * @param $needPersist
+     * @return array
+     */
+    public function update($carBrand, $needPersist = false): array
+    {
+        $result = $this->carBrandRepository->update($carBrand, $needPersist);
+
+        if (!$result) {
+            return array(
+                'status' => false,
+                'statusCode' => 400,
+                'message' => 'No se ha podido actualizar los datos de la marca del coche.',
+                'data' => null
+            );
+        }
+
+        return array(
+            'status' => true,
+            'statusCode' => 200,
+            'message' => 'La marca del coche se ha actualizado correctamente.',
+            'data' => null
         );
     }
 

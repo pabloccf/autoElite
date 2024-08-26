@@ -16,6 +16,8 @@ class CarBrandFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $isEdit = $options['isEdit'];
+
         $builder
             ->add('name', TextType::class, [
                 'required' => false,
@@ -41,7 +43,7 @@ class CarBrandFormType extends AbstractType
                     'accept' => '.svg, .jpg, .jpeg, .png'
                 ],
                 'mapped' => false,
-                'constraints' => [
+                'constraints' => $isEdit ? [] : [
                     new NotBlank(['message' => 'Este campo no puede estar vacío.']),
                     new File([
                         'maxSize' => '1024k',
@@ -64,6 +66,7 @@ class CarBrandFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => CarBrand::class,
+            'isEdit' => false,
         ]);
     }
 }

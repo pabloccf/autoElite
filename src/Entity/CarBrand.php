@@ -27,6 +27,9 @@ class CarBrand
     #[ORM\OneToMany(targetEntity: CarModel::class, mappedBy: 'carBrand', orphanRemoval: true)]
     private Collection $carModels;
 
+    #[ORM\Column]
+    private ?bool $isDeleted = false;
+
     /**
      * @param int|null $id
      * @param string|null $name
@@ -95,6 +98,18 @@ class CarBrand
                 $carModel->setCarBrand(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isDeleted(): ?bool
+    {
+        return $this->isDeleted;
+    }
+
+    public function setDeleted(bool $isDeleted): static
+    {
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }

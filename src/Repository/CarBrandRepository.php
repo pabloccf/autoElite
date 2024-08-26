@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\CarBrand;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -24,6 +25,59 @@ class CarBrandRepository extends ServiceEntityRepository
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * Función que recupera todos los datos de la marca si no esta eliminada
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @return array
+     * @throws Exception
+     * @throws \Throwable
+     */
+    public function findAllNotDeleted(): array
+    {
+        $sql = '
+            SELECT * FROM car_brand
+            WHERE is_deleted = :isDeleted
+        ';
+
+        $parameters = ['isDeleted' => 0];
+
+        try {
+            $connection = $this->entityManager->getConnection();
+            $query = $connection->prepare($sql);
+            $resultQuery = $query->executeQuery($parameters);
+            $result = $resultQuery->fetchAllAssociative();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Función que edita los datos de una marca de coche
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $carBrand
+     * @param $needPersist
+     * @return bool
+     */
+    public function update($carBrand, $needPersist = false): bool
+    {
+        try {
+            if ($needPersist) {
+                $this->entityManager->persist($carBrand);
+            }
+
+            $this->entityManager->flush();
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
 
     /**
      * Función que elimina una marca de coche
@@ -36,7 +90,8 @@ class CarBrandRepository extends ServiceEntityRepository
     public function remove($carBrand): bool
     {
         try {
-            $this->entityManager->remove($carBrand);
+            $carBrand->setDeleted(true);
+            $this->entityManager->persist($carBrand);
             $this->entityManager->flush();
         } catch (\Exception $e) {
             return false;

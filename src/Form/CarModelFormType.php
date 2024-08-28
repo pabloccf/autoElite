@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\CarBrand;
 use App\Entity\CarModel;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -43,6 +44,7 @@ class CarModelFormType extends AbstractType
                     'class' => 'form-select'
                 ],
                 'choices' => [
+                    'Turismo' => 'Turismo',
                     'Sedán' => 'Sedán',
                     'SUV' => 'SUV',
                     'Coupé' => 'Coupé',
@@ -68,6 +70,7 @@ class CarModelFormType extends AbstractType
                 ],
                 'mapped' => false,
                 'constraints' => [
+                    new NotBlank(['message' => 'Este campo no puede estar vacío.']),
                     new File([
                         'maxSize' => '2M',
                         'mimeTypes' => [
@@ -75,8 +78,7 @@ class CarModelFormType extends AbstractType
                             'image/png',
                         ],
                         'mimeTypesMessage' => 'Por favor, adjunte una imagen JPEG o PNG válida.'
-                    ]),
-                    new NotBlank(['message' => 'Este campo no puede estar vacío.'])
+                    ])
                 ]
             ])
             ->add('carBrand', EntityType::class, [
@@ -92,7 +94,12 @@ class CarModelFormType extends AbstractType
                 ],
                 'constraints' => [
                     new NotBlank(['message' => 'Este campo no puede estar vacío.'])
-                ]
+                ],
+                'query_builder' => function(EntityRepository $er) {
+                    return $er->createQueryBuilder('cb')
+                        ->where('cb.isDeleted = 0')
+                        ->orderBy('cb.name', 'ASC');
+                }
             ])
             ->add('send', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-lg gradient-button']

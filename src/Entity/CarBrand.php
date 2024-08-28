@@ -113,4 +113,9 @@ class CarBrand
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

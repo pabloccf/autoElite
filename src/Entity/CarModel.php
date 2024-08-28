@@ -34,6 +34,9 @@ class CarModel
     #[ORM\JoinColumn(nullable: false)]
     private ?CarBrand $carBrand = null;
 
+    #[ORM\Column]
+    private ?bool $isDeleted = false;
+
     /**
      * @param int|null $id
      * @param string|null $name
@@ -129,6 +132,18 @@ class CarModel
     public function setCarBrand(?CarBrand $carBrand): static
     {
         $this->carBrand = $carBrand;
+
+        return $this;
+    }
+
+    public function isDeleted(): ?bool
+    {
+        return $this->isDeleted;
+    }
+
+    public function setDeleted(bool $isDeleted): static
+    {
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }

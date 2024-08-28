@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\CarModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -11,9 +13,61 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CarModelRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private EntityManagerInterface $entityManager;
+
+    /**
+     * @param ManagerRegistry $registry
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, CarModel::class);
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * @return array
+     * @throws Exception
+     * @throws \Throwable
+     */
+    public function findAllNotDeleted(): array
+    {
+        $sql = '
+            SELECT cm.*, cb.name as brand_name 
+            FROM car_model cm
+            JOIN car_brand cb ON cm.car_brand_id = cb.id
+            WHERE cm.is_deleted = :isDeleted
+        ';
+
+        $parameters = ['isDeleted' => 0];
+
+        try {
+            $connection = $this->entityManager->getConnection();
+            $query = $connection->prepare($sql);
+            $resultQuery = $query->executeQuery($parameters);
+            $result = $resultQuery->fetchAllAssociative();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param $carModel
+     * @return bool
+     */
+    public function remove($carModel): bool
+    {
+        try {
+            $carModel->setDeleted(true);
+            $this->entityManager->persist($carModel);
+            $this->entityManager->flush();
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return true;
     }
 
     //    /**

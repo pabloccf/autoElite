@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Agregar modelo{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+    <style>
+        .dealer-wallpaper {
+            background-image: url("{{ asset('images/fondoConcesionario.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+
+    <section class="vh-100 dealer-wallpaper" style="background-color: #eee;">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-lg-12 col-xl-11">
+                    <div class="card text-black" style="border-radius: 25px;">
+                        <div class="card-body p-md-5">
+                            <div class="row justify-content-center">
+                                <div class="col-md-12 col-lg-8 col-xl-7 order-2 order-lg-1">
+
+                                    <p class="text-center h1 fw-bold mb-4 mx-1 mx-md-4 mt-4">Editar modelo</p>
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item">
+                                                <a href="{{ path('list_car_model') }}">Volver</a>
+                                            </li>
+                                            <li class="breadcrumb-item active" aria-current="page">Editar modelo</li>
+                                        </ol>
+                                    </nav>
+
+                                    {{ form_start(carModelForm) }}
+                                    <div class="mx-1 mx-md-4">
+                                        <div class="d-flex flex-row text-start mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_label(carModelForm.carBrand) }}
+                                                {{ form_widget(carModelForm.carBrand) }}
+                                                <small class="form-text text-danger">{{ form_errors(carModelForm.carBrand) }}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row text-start mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_label(carModelForm.name) }}
+                                                {{ form_widget(carModelForm.name) }}
+                                                <small class="form-text text-danger">{{ form_errors(carModelForm.name) }}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row text-start mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_label(carModelForm.body_type) }}
+                                                {{ form_widget(carModelForm.body_type) }}
+                                                <small class="form-text text-danger">{{ form_errors(carModelForm.body_type) }}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row text-start mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_label(carModelForm.image) }}
+                                                {{ form_widget(carModelForm.image) }}
+                                                <small class="form-text text-danger">{{ form_errors(carModelForm.image) }}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                                            {{ form_widget(carModelForm.send, { 'label': 'Editar Modelo' }) }}
+                                        </div>
+                                    </div>
+                                    {{ form_end(carModelForm) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

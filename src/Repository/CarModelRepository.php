@@ -26,6 +26,10 @@ class CarModelRepository extends ServiceEntityRepository
     }
 
     /**
+     * Función que recupera todos los datos de los modelos si no esta eliminado
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
      * @return array
      * @throws Exception
      * @throws \Throwable
@@ -54,6 +58,34 @@ class CarModelRepository extends ServiceEntityRepository
     }
 
     /**
+     * Función que edita los datos de un modelo de un coche
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $carModel
+     * @param $needPersist
+     * @return bool
+     */
+    public function update($carModel, $needPersist = false): bool
+    {
+        try {
+            if ($needPersist) {
+                $this->entityManager->persist($carModel);
+            }
+
+            $this->entityManager->flush();
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Función que elimina un modelo de un coche
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
      * @param $carModel
      * @return bool
      */

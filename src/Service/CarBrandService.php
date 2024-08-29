@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Repository\CarBrandRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CarBrandService
@@ -23,9 +24,11 @@ class CarBrandService
     /**
      * Función que imprime todas las marcas de los coches de la base de datos
      *
+     * @return array
+     * @throws Exception
+     * @throws \Throwable
      * @author Pablo López Gosálvez <i92logop@uco.es>
      *
-     * @return array
      */
     public function getCarBrands(): array
     {

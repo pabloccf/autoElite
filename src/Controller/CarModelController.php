@@ -8,6 +8,7 @@ use App\Repository\CarModelRepository;
 use App\Service\CarModelService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,6 +33,13 @@ class CarModelController extends AbstractController
     }
 
 
+    /**
+     * Función que renderiza la vista de la lista de modelos de coches
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @return Response
+     */
     #[Route('/car/model', name: 'list_car_model')]
     public function index(): Response
     {
@@ -40,6 +48,14 @@ class CarModelController extends AbstractController
         return $this->render('car_model/index.html.twig', ['carModels' => $result['data']]);
     }
 
+    /**
+     * Función que renderiza la vista de añadir un modelo de coche
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param Request $request
+     * @return Response
+     */
     #[Route('car/model/add', name: 'add_car_model')]
     public function add(Request $request): Response
     {
@@ -49,38 +65,87 @@ class CarModelController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                /*$carBrand = $form->get('carBrand')->getData();
-                $carModel->setCarBrand($carBrand);*/
+            $carModelName = $form->get('name')->getData();
 
-                $carModelName = $form->get('name')->getData();
-                /*$carModel->setName($carModelName);
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) {
+                $modelName = preg_replace('/[^a-zA-Z0-9-_\.]/', '_', $carModelName);
+                $newFileName = $modelName.'_'.uniqid().'.'.$imageFile->guessExtension();
 
-                $bodyType = $form->get('body_type')->getData();
-                $carModel->setBodyType($bodyType);*/
+                try {
+                    $imageFile->move(
+                        $this->getParameter('models_directory'),
+                        $newFileName
+                    );
+                } catch (FileException $e) {
 
-                $imageFile = $form->get('image')->getData();
-                if ($imageFile) {
-                    $modelName = preg_replace('/[^a-zA-Z0-9-_\.]/', '_', $carModelName);
-                    $newFileName = $modelName.'_'.uniqid().'.'.$imageFile->guessExtension();
-
-                    $imageFile->move($this->getParameter('models_directory'), $newFileName);
-                    $carModel->setImage($newFileName);
                 }
-
-                var_dump($carModel->getImage());
-                $this->entityManager->persist($carModel);
-                $this->entityManager->flush();
-
-                $this->redirectToRoute('list_car_model');
-            } catch (\Exception $e) {
-                $this->redirectToRoute('add_car_model');
+                $carModel->setImage($newFileName);
             }
+
+            $this->entityManager->persist($carModel);
+            $this->entityManager->flush();
+
+            $this->redirectToRoute('list_car_model');
         }
 
         return $this->render('car_model/add.html.twig', ['carModelForm' => $form->createView()]);
     }
 
+    /**
+     * Función que renderiza la vista de editar los datos de una marca de coche
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $id
+     * @param Request $request
+     * @return RedirectResponse|Response
+     */
+    #[Route('car/model/edit/{id}', name: 'edit_car_model')]
+    public function edit($id, Request $request): RedirectResponse|Response
+    {
+        $carModel = $this->carModelRepository->find($id);
+
+        if (!$carModel) {
+            throw $this->createNotFoundException('No se encontro el modelo con el id ' . $id);
+        }
+
+        $form = $this->createForm(CarModelFormType::class, $carModel, ['isEdit' => true]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) {
+                $modelName = preg_replace('/[^a-zA-Z0-9-_\.]/', '_', $form->get('name')->getData());
+                $newFileName = $modelName.'_'.uniqid().'.'.$imageFile->guessExtension();
+
+                try {
+                    $imageFile->move(
+                        $this->getParameter('models_directory'),
+                        $newFileName
+                    );
+                } catch (FileException $e) {
+
+                }
+                $carModel->setImage($newFileName);
+            }
+
+            $this->carModelService->update($carModel);
+
+            return $this->redirectToRoute('list_car_model');
+        }
+
+        return $this->render('car_model/edit.html.twig', array('carModel' => $carModel, 'carModelForm' => $form->createView()));
+    }
+
+    /**
+     * Función que renderiza la vista de eliminar un modelo de un coche
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $id
+     * @return RedirectResponse
+     */
     #[Route('car/model/delete/{id}', name: 'delete_car_model', methods: ['POST', 'DELETE'])]
     public function delete($id): RedirectResponse
     {

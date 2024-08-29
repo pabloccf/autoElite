@@ -55,7 +55,7 @@
                                 <td>{{ carModel.name }}</td>
                                 <td>{{ carModel.body_type }}</td>
                                 <td class="actions">
-{#                                    <a href="{{ path('edit_user', { id : user.id }) }}" class="btn btn-sm btn-warning fa-solid fa-user-pen"></a>#}
+                                    <a href="{{ path('edit_car_model', { id : carModel.id }) }}" class="btn btn-sm btn-warning fa-solid fa-pen-to-square"></a>
                                     <a href="javascript:void(0)" class="btn btn-sm btn-danger fa-solid fa-trash"
                                        onclick="confirmSweet('¿Estás seguro de eliminar el modelo del coche?', '{{ path('delete_car_model', { id: carModel.id }) }}', '{{ csrf_token('delete_car_model' ~ carModel.id) }}')">
                                     </a>

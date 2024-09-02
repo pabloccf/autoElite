@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class CarModelController extends AbstractController
 {
@@ -63,10 +64,11 @@ class CarModelController extends AbstractController
      * @author Pablo López Gosálvez <i92logop@uco.es>
      *
      * @param Request $request
+     * @param SluggerInterface $slugger
      * @return Response
      */
     #[Route('car/model/add', name: 'add_car_model')]
-    public function add(Request $request): Response
+    public function add(Request $request, SluggerInterface $slugger): Response
     {
         $carModel = new CarModel();
 
@@ -74,28 +76,27 @@ class CarModelController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $carModelName = $form->get('name')->getData();
-
             $imageFile = $form->get('image')->getData();
             if ($imageFile) {
-                $modelName = preg_replace('/[^a-zA-Z0-9-_\.]/', '_', $carModelName);
-                $newFileName = $modelName.'_'.uniqid().'.'.$imageFile->guessExtension();
+                $safeFilename = $slugger->slug($carModel->getName()); // Usar el nombre del modelo para el nombre del archivo
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
 
                 try {
                     $imageFile->move(
                         $this->getParameter('models_directory'),
-                        $newFileName
+                        $newFilename
                     );
                 } catch (FileException $e) {
 
                 }
-                $carModel->setImage($newFileName);
+
+                $carModel->setImage($newFilename);
             }
 
             $this->entityManager->persist($carModel);
             $this->entityManager->flush();
 
-            $this->redirectToRoute('list_car_model');
+            return $this->redirectToRoute('list_car_model');
         }
 
         return $this->render('car_model/add.html.twig', ['carModelForm' => $form->createView()]);
@@ -119,7 +120,7 @@ class CarModelController extends AbstractController
             throw $this->createNotFoundException('No se encontro el modelo con el id ' . $id);
         }
 
-        $form = $this->createForm(CarModelFormType::class, $carModel);
+        $form = $this->createForm(CarModelFormType::class, $carModel, ['isEdit' => true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -164,10 +165,10 @@ class CarModelController extends AbstractController
             throw $this->createNotFoundException('No se encontro el modelo con el id ' . $id);
         }
 
-        /*$imagePath = $this->getParameter('models_directory') . '/' . $carModel->getImage();
+        $imagePath = $this->getParameter('models_directory') . '/' . $carModel->getImage();
         if (file_exists($imagePath)) {
             unlink($imagePath);
-        }*/
+        }
 
         $this->carModelService->remove($carModel);
 

@@ -6,6 +6,7 @@ use App\Entity\CarModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -30,31 +31,23 @@ class CarModelRepository extends ServiceEntityRepository
      *
      * @author Pablo López Gosálvez <i92logop@uco.es>
      *
-     * @return array
-     * @throws Exception
-     * @throws \Throwable
+     * @return Query
      */
-    public function findAllNotDeleted(): array
+    public function findAllNotDeleted(): Query
     {
-        $sql = '
-            SELECT cm.*, cb.name as brand_name 
-            FROM car_model cm
-            JOIN car_brand cb ON cm.car_brand_id = cb.id
-            WHERE cm.is_deleted = :isDeleted
+        $dql = '
+            SELECT cm, cb.name as brand_name
+            FROM App\Entity\CarModel cm
+            JOIN cm.carBrand cb
+            WHERE cm.isDeleted = :isDeleted
         ';
 
         $parameters = ['isDeleted' => 0];
 
-        try {
-            $connection = $this->entityManager->getConnection();
-            $query = $connection->prepare($sql);
-            $resultQuery = $query->executeQuery($parameters);
-            $result = $resultQuery->fetchAllAssociative();
-        } catch (\Throwable $th) {
-            throw $th;
-        }
+        $query = $this->entityManager->createQuery($dql);
+        $query->setParameters($parameters);
 
-        return $result;
+        return $query;
     }
 
     /**

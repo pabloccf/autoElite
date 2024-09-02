@@ -7,6 +7,7 @@ use App\Form\CarModelFormType;
 use App\Repository\CarModelRepository;
 use App\Service\CarModelService;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -38,14 +39,22 @@ class CarModelController extends AbstractController
      *
      * @author Pablo López Gosálvez <i92logop@uco.es>
      *
+     * @param Request $request
+     * @param PaginatorInterface $paginator
      * @return Response
      */
     #[Route('/car/model', name: 'list_car_model')]
-    public function index(): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        $result = $this->carModelService->getCarModels();
+        $query = $this->carModelRepository->findAllNotDeleted();
 
-        return $this->render('car_model/index.html.twig', ['carModels' => $result['data']]);
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            8 /*limit per page*/
+        );
+
+        return $this->render('car_model/index.html.twig', ['carModels' => $pagination]);
     }
 
     /**
@@ -110,7 +119,7 @@ class CarModelController extends AbstractController
             throw $this->createNotFoundException('No se encontro el modelo con el id ' . $id);
         }
 
-        $form = $this->createForm(CarModelFormType::class, $carModel, ['isEdit' => true]);
+        $form = $this->createForm(CarModelFormType::class, $carModel);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

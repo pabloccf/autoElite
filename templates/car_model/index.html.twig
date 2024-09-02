@@ -47,23 +47,27 @@
                     </thead>
                     <tbody>
                         {% for carModel in carModels %}
-                            <tr data-id="{{ carModel.id }}">
+                            <tr data-id="{{ carModel[0].id }}">
                                 <td>
-                                    <img src="{{ asset('uploads/models/' ~ carModel.image) }}" alt="{{ carModel.name }} logo" style="width: auto; height: 60px;">
+                                    <img src="{{ asset('uploads/models/' ~ carModel[0].image) }}" alt="{{ carModel[0].name }} logo" style="width: auto; height: 60px;">
                                 </td>
-                                <td>{{ carModel.brand_name }}</td>
-                                <td>{{ carModel.name }}</td>
-                                <td>{{ carModel.body_type }}</td>
+                                <td>{{ carModel['brand_name'] }}</td>
+                                <td>{{ carModel[0].name }}</td>
+                                <td>{{ carModel[0].bodyType }}</td>
                                 <td class="actions">
-                                    <a href="{{ path('edit_car_model', { id : carModel.id }) }}" class="btn btn-sm btn-warning fa-solid fa-pen-to-square"></a>
+                                    <a href="{{ path('edit_car_model', { id : carModel[0].id }) }}" class="btn btn-sm btn-warning fa-solid fa-pen-to-square"></a>
                                     <a href="javascript:void(0)" class="btn btn-sm btn-danger fa-solid fa-trash"
-                                       onclick="confirmSweet('¿Estás seguro de eliminar el modelo del coche?', '{{ path('delete_car_model', { id: carModel.id }) }}', '{{ csrf_token('delete_car_model' ~ carModel.id) }}')">
+                                       onclick="confirmSweet('¿Estás seguro de eliminar el modelo del coche?', '{{ path('delete_car_model', { id: carModel[0].id }) }}', '{{ csrf_token('delete_car_model' ~ carModel[0].id) }}')">
                                     </a>
                                 </td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+            </div>
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(carModels) }}
             </div>
         </div>
     </div>

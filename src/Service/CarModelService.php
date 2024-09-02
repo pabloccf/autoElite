@@ -22,27 +22,6 @@ class CarModelService
     }
 
     /**
-     * Función que imprime todos los modelos de los coches de la base de datos
-     *
-     * @author Pablo López Gosálvez <i92logop@uco.es>
-     *
-     * @return array
-     * @throws Exception
-     * @throws \Throwable
-     */
-    public function getCarModels(): array
-    {
-        $carModels = $this->carModelRepository->findAllNotDeleted();
-
-        return array(
-            'status' => true,
-            'statusCode' => 200,
-            'message' => "",
-            'data' => $carModels
-        );
-    }
-
-    /**
      * Función que edita los datos de un modelo de un coche
      *
      * @author Pablo López Gosálvez <i92logop@uco.es>

@@ -37,30 +37,34 @@
             <div class="table-responsive d-flex align-items-center">
                 <table class="table table-hover">
                     <thead class="table-light">
-                    <tr>
-                        <th>Nombre de la marca</th>
-                        <th>Logo</th>
-                        <th>Acciones</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for carBrand in carBrands %}
-                <tr data-id="{{ carBrand.id }}">
-                    <td class="d-flex justify-content-center" style="line-height: 60px">{{ carBrand.name }}</td>
-                    <td>
-                        <img src="{{ asset('uploads/logos/' ~ carBrand.logo) }}" alt="{{ carBrand.name }} logo" style="width: auto; height: 60px;">
-                    </td>
-                    <td class="actions">
-                        <a href="{{ path('edit_car_brand', { id : carBrand.id }) }}" class="btn btn-sm btn-warning fa-solid fa-pen-to-square"></a>
-                        <a href="javascript:void(0)" class="btn btn-sm btn-danger fa-solid fa-trash"
-                           onclick="confirmSweet('¿Estás seguro de eliminar la marca de coche?', '{{ path('delete_car_brand', { id: carBrand.id }) }}', '{{ csrf_token('delete_car_brand' ~ carBrand.id) }}')">
-                        </a>
-                    </td>
-                </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
+                        <tr>
+                            <th>Nombre de la marca</th>
+                            <th>Logo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for carBrand in carBrands %}
+                            <tr data-id="{{ carBrand.id }}">
+                                <td class="d-flex justify-content-center" style="line-height: 60px">{{ carBrand.name }}</td>
+                                <td>
+                                    <img src="{{ asset('uploads/logos/' ~ carBrand.logo) }}" alt="{{ carBrand.name }} logo" style="width: auto; height: 60px;">
+                                </td>
+                                <td class="actions">
+                                    <a href="{{ path('edit_car_brand', { id : carBrand.id }) }}" class="btn btn-sm btn-warning fa-solid fa-pen-to-square"></a>
+                                    <a href="javascript:void(0)" class="btn btn-sm btn-danger fa-solid fa-trash"
+                                       onclick="confirmSweet('¿Estás seguro de eliminar la marca de coche?', '{{ path('delete_car_brand', { id: carBrand.id }) }}', '{{ csrf_token('delete_car_brand' ~ carBrand.id) }}')">
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(carBrands) }}
+            </div>
         </div>
     </div>
 {% endblock %}

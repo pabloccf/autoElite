@@ -7,6 +7,7 @@ use App\Form\CarBrandFormType;
 use App\Repository\CarBrandRepository;
 use App\Service\CarBrandService;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,11 +41,17 @@ class CarBrandController extends AbstractController
      * @return Response
      */
     #[Route('/car/brand', name: 'list_car_brand')]
-    public function index(): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        $result = $this->carBrandService->getCarBrands();
+        $query = $this->carBrandRepository->findAllNotDeleted();
 
-        return $this->render('car_brand/index.html.twig', ['carBrands' => $result['data']]);
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            8 /*limit per page*/
+        );
+
+        return $this->render('car_brand/index.html.twig', ['carBrands' => $pagination]);
     }
 
     /**

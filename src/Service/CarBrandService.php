@@ -21,26 +21,6 @@ class CarBrandService
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * Función que imprime todas las marcas de los coches de la base de datos
-     *
-     * @return array
-     * @throws Exception
-     * @throws \Throwable
-     * @author Pablo López Gosálvez <i92logop@uco.es>
-     *
-     */
-    public function getCarBrands(): array
-    {
-        $carBrands = $this->carBrandRepository->findAllNotDeleted();
-
-        return array(
-            'status' => true,
-            'statusCode' => 200,
-            'message' => "",
-            'data' => $carBrands
-        );
-    }
 
     /**
      * Función que edita los datos de una marca de coche

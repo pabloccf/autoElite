@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Car;
+use App\Entity\CarBrand;
 use App\Entity\CarModel;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -47,7 +49,7 @@ class CarFormType extends AbstractType
                 'constraints' => [
                     new NotBlank(['message' => 'Este campo no puede estar vacío.']),
                     new Regex([
-                        'pattern' => '^\d{4}\s?[BCDFGHJKLMNPRSTVWXYZ]{3}$',
+                        'pattern' => '/^\d{4}\s?[BCDFGHJKLMNPRSTVWXYZ]{3}$/',
                         'message' => 'Formato de matrícula incorrecto. Formato correcto: 1234BCD.'
                     ])
                 ]
@@ -232,9 +234,40 @@ class CarFormType extends AbstractType
                 'label_attr' => [
                     'class' => 'form-label'
                 ],
+                'disabled' => true,
+                'choice_attr' => function (CarModel $carModel) {
+                    return ['class' => 'brand-' . strtolower($carModel->getCarBrand()->getName())];
+                },
+                'query_builder' => function(EntityRepository $er) {
+                    return $er->createQueryBuilder('cm')
+                        ->where('cm.isDeleted = :isDeleted')
+                        ->setParameter('isDeleted', 0)
+                        ->groupBy('cm.name');
+                },
                 'constraints' => [
                     new NotBlank(['message' => 'Este campo no puede estar vacío.'])
                 ]
+            ])
+            ->add('carBrand', EntityType::class, [
+                'class' => CarBrand::class,
+                'choice_label' => 'name',
+                'required' => false,
+                'mapped' => false,
+                'attr' => [
+                    'class' => 'form-select'
+                ],
+                'label' => 'Marca:',
+                'label_attr' => [
+                    'class' => 'form-label'
+                ],
+                'constraints' => [
+                    new NotBlank(['message' => 'Este campo no puede estar vacío.'])
+                ],
+                'query_builder' => function(EntityRepository $er) {
+                    return $er->createQueryBuilder('cb')
+                        ->where('cb.isDeleted = 0')
+                        ->orderBy('cb.name', 'ASC');
+                }
             ])
             ->add('send', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-lg gradient-button']

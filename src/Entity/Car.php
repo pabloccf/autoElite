@@ -75,10 +75,9 @@ class Car
      * @param \DateTimeInterface|null $registration_date
      * @param bool|null $needs_repair
      * @param string|null $extras
-     * @param CarModel|null $carModel
      * @param int|null $manufacture_year
      */
-    public function __construct(?int $id = null, ?string $colour = null, ?string $plate = null, ?string $vin = null, ?string $fuel = null, ?int $cylinders = null, ?int $power = null, ?int $kilometers = null, ?int $doors = null, ?string $status = null, ?int $previous_owners = null, ?\DateTimeInterface $registration_date = null, ?bool $needs_repair = null, ?string $extras = null, ?CarModel $carModel = null, ?int $manufacture_year = null)
+    public function __construct(?int $id = null, ?string $colour = null, ?string $plate = null, ?string $vin = null, ?string $fuel = null, ?int $cylinders = null, ?int $power = null, ?int $kilometers = null, ?int $doors = null, ?string $status = null, ?int $previous_owners = null, ?\DateTimeInterface $registration_date = null, ?bool $needs_repair = null, ?string $extras = null, ?int $manufacture_year = null)
     {
         $this->id = $id;
         $this->colour = $colour;
@@ -94,7 +93,6 @@ class Car
         $this->registration_date = $registration_date;
         $this->needs_repair = $needs_repair;
         $this->extras = $extras;
-        $this->carModel = $carModel;
         $this->manufacture_year = $manufacture_year;
     }
 

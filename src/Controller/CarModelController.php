@@ -47,6 +47,11 @@ class CarModelController extends AbstractController
     #[Route('/car/model', name: 'list_car_model')]
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
+        // Verificar si el usuario está autenticado
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');  // Redirigir a login si no está autenticado
+        }
+
         $query = $this->carModelRepository->findAllNotDeleted();
 
         $pagination = $paginator->paginate(
@@ -70,6 +75,11 @@ class CarModelController extends AbstractController
     #[Route('car/model/add', name: 'add_car_model')]
     public function add(Request $request, SluggerInterface $slugger): Response
     {
+        // Verificar si el usuario está autenticado
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');  // Redirigir a login si no está autenticado
+        }
+
         $carModel = new CarModel();
 
         $form = $this->createForm(CarModelFormType::class, $carModel);
@@ -114,6 +124,11 @@ class CarModelController extends AbstractController
     #[Route('car/model/edit/{id}', name: 'edit_car_model')]
     public function edit($id, Request $request): RedirectResponse|Response
     {
+        // Verificar si el usuario está autenticado
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');  // Redirigir a login si no está autenticado
+        }
+
         $carModel = $this->carModelRepository->find($id);
 
         if (!$carModel) {
@@ -159,6 +174,11 @@ class CarModelController extends AbstractController
     #[Route('car/model/delete/{id}', name: 'delete_car_model', methods: ['POST', 'DELETE'])]
     public function delete($id): RedirectResponse
     {
+        // Verificar si el usuario está autenticado
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');  // Redirigir a login si no está autenticado
+        }
+
         $carModel = $this->carModelRepository->find($id);
 
         if (!$carModel) {

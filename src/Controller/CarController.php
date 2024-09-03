@@ -32,6 +32,11 @@ class CarController extends AbstractController
     #[Route('/car', name: 'list_car')]
     public function index(): Response
     {
+        // Verificar si el usuario está autenticado
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');  // Redirigir a login si no está autenticado
+        }
+
         return $this->render('car/index.html.twig', [
             'controller_name' => 'CarController',
         ]);
@@ -40,6 +45,11 @@ class CarController extends AbstractController
     #[Route('/car/add', name: 'add_car')]
     public function add(Request $request): Response
     {
+        // Verificar si el usuario está autenticado
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');  // Redirigir a login si no está autenticado
+        }
+
         $car = new Car();
         $form = $this->createForm(CarFormType::class, $car);
         $form->handleRequest($request);

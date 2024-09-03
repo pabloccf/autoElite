@@ -43,6 +43,11 @@ class CarBrandController extends AbstractController
     #[Route('/car/brand', name: 'list_car_brand')]
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
+        // Verificar si el usuario está autenticado
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');  // Redirigir a login si no está autenticado
+        }
+
         $query = $this->carBrandRepository->findAllNotDeleted();
 
         $pagination = $paginator->paginate(
@@ -65,6 +70,11 @@ class CarBrandController extends AbstractController
     #[Route('car/brand/add', name: 'add_car_brand')]
     public function add(Request $request): Response
     {
+        // Verificar si el usuario está autenticado
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');  // Redirigir a login si no está autenticado
+        }
+
         $carBrand = new CarBrand();
 
         $form = $this->createForm(CarBrandFormType::class, $carBrand);
@@ -108,6 +118,11 @@ class CarBrandController extends AbstractController
     #[Route('car/brand/edit/{id}', name: 'edit_car_brand')]
     public function edit($id, Request $request): RedirectResponse|Response
    {
+       // Verificar si el usuario está autenticado
+       if (!$this->getUser()) {
+           return $this->redirectToRoute('app_login');  // Redirigir a login si no está autenticado
+       }
+
         $carBrand = $this->carBrandRepository->find($id);
 
         if (!$carBrand) {
@@ -148,6 +163,11 @@ class CarBrandController extends AbstractController
     #[Route('car/brand/delete/{id}', name: 'delete_car_brand', methods: ['POST', 'DELETE'])]
     public function delete($id): RedirectResponse
     {
+        // Verificar si el usuario está autenticado
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');  // Redirigir a login si no está autenticado
+        }
+
         $carBrand = $this->carBrandRepository->find($id);
 
         if (!$carBrand) {

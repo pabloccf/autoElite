@@ -60,6 +60,9 @@ class Car
     #[ORM\Column(nullable: true)]
     private ?int $manufacture_year = null;
 
+    #[ORM\Column]
+    private ?bool $isDeleted = false;
+
     /**
      * @param int|null $id
      * @param string|null $colour
@@ -277,6 +280,18 @@ class Car
     public function setManufactureYear(?int $manufacture_year): static
     {
         $this->manufacture_year = $manufacture_year;
+
+        return $this;
+    }
+
+    public function isDeleted(): ?bool
+    {
+        return $this->isDeleted;
+    }
+
+    public function setDeleted(bool $isDeleted): static
+    {
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }

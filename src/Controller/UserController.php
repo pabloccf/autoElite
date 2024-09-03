@@ -7,6 +7,7 @@ use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Service\UserService;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Form\FormInterface;
@@ -46,14 +47,22 @@ class UserController extends AbstractController
      *
      * @author Pablo López Gosálvez <i92logop@uco.es>
      *
+     * @param Request $request
+     * @param PaginatorInterface $paginator
      * @return Response
      */
     #[Route('/user', name: 'list_user')]
-    public function index(): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        $result = $this->userService->getUsers();
+        $query = $this->userRepository->getUsers();
 
-        return $this->render('user/index.html.twig', array('users' => $result['data']));
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            8 /*limit per page*/
+        );
+
+        return $this->render('user/index.html.twig', array('users' => $pagination));
     }
 
 

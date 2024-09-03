@@ -6,6 +6,7 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -28,6 +29,23 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->entityManager = $entityManager;
     }
 
+
+    /**
+     * Función que recupera todos los datos de los usuarios
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     * @return Query
+     */
+    public function getUsers(): Query
+    {
+        $dql = '
+            SELECT u
+            FROM App\Entity\User u
+        ';
+
+        return $this->entityManager->createQuery($dql);
+    }
+
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
@@ -48,7 +66,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      * @author Pablo López Gosálvez <i92logop@uco.es>
      *
      * @param $id
-     * @return $currentPassword
+     * @return array|bool $currentPassword
      * @throws Exception
      * @throws \Throwable
      */

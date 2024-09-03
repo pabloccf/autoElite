@@ -73,6 +73,10 @@
                     </tbody>
                 </table>
             </div>
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(users) }}
+            </div>
         </div>
     </div>
 {% endblock %}

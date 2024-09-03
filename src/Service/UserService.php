@@ -20,24 +20,6 @@ class UserService
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * Función que imprime todos los usuarios de la base de datos
-     *
-     * @author Pablo López Gosálvez <i92logop@uco.es>
-     *
-     * @return array
-     */
-    public function getUsers(): array
-    {
-        $users = $this->userRepository->findAll();
-
-        return array(
-            'status' => true,
-            'statusCode' => 200,
-            'message' => "",
-            'data' => $users
-        );
-    }
 
     /**
      * Función que recupera la contraseña del usuario

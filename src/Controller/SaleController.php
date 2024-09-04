@@ -7,6 +7,7 @@ use App\Form\SaleFormType;
 use App\Repository\CarRepository;
 use App\Repository\SaleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -34,16 +35,22 @@ class SaleController extends AbstractController
 
 
     #[Route('/sale', name: 'list_sale')]
-    public function index(): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
         // Verificar si el usuario está autenticado
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');  // Redirigir a login si no está autenticado
         }
 
-        return $this->render('sale/index.html.twig', [
-            'controller_name' => 'SaleController',
-        ]);
+        $query = $this->saleRepository->findSales();
+
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            8 /*limit per page*/
+        );
+
+        return $this->render('sale/index.html.twig', ['sales' => $pagination]);
     }
 
     #[Route('/sale/add/{carId}', name: 'add_sale')]

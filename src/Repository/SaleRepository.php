@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Sale;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -11,9 +13,27 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SaleRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, Sale::class);
+        $this->entityManager = $entityManager;
+    }
+
+
+    public function findSales(): Query
+    {
+        $dql = '
+            SELECT s, u.username, car, carModel, carBrand
+            FROM App\Entity\Sale s
+            JOIN s.user u
+            JOIN s.car car
+            JOIN car.carModel carModel
+            JOIN carModel.carBrand carBrand
+        ';
+
+        return $this->entityManager->createQuery($dql);
     }
 
     //    /**

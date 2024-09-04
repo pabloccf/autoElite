@@ -27,6 +27,10 @@ class CarRepository extends ServiceEntityRepository
 
 
     /**
+     * Función que recupera algunos datos del coche, del modelo y de la marca
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
      * @return Query
      */
     public function findNotDeleted(): Query
@@ -45,6 +49,27 @@ class CarRepository extends ServiceEntityRepository
         $query->setParameters($parameters);
 
         return $query;
+    }
+
+    /**
+     * Función que elimina un coche
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $car
+     * @return bool
+     */
+    public function remove($car): bool
+    {
+        try {
+            $car->setDeleted(true);
+            $this->entityManager->persist($car);
+            $this->entityManager->flush();
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return true;
     }
 
     //    /**

@@ -90,10 +90,10 @@ class CarFormType extends AbstractType
             ->add('cylinders', IntegerType::class, [
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'Cilindros',
+                    'placeholder' => 'Número de cilindros',
                     'class' => 'form-control'
                 ],
-                'label' => 'Cilindros:',
+                'label' => 'Número de cilindros:',
                 'label_attr' => [
                     'class' => 'form-label'
                 ],

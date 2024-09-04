@@ -190,6 +190,9 @@
 
     <script>
         $(document).ready(function() {
+            // Inicialmente deshabilitar el select de modelos
+            $('#car_form_carModel').prop('disabled', true);
+
             $('#car_form_carBrand').change(function() {
                 const selectedBrandClass = 'brand-' + $(this).find('option:selected').text().toLowerCase();
 
@@ -207,10 +210,8 @@
                 modelSelect.val('');  // Resetea el valor del select
             });
 
-            // Inicialmente deshabilitar el select de modelos
-            $('#car_form_carModel').prop('disabled', true);
 
-            $('#car_form').on('submit', function(e) {
+            $('#car_form').on('send', function(e) {
                 if ($('#car_form_carModel').prop('disabled') || !$('#car_form_carModel').val()) {
                     e.preventDefault();
                     alert('Por favor selecciona un modelo antes de enviar el formulario.');

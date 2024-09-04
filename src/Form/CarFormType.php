@@ -234,7 +234,6 @@ class CarFormType extends AbstractType
                 'label_attr' => [
                     'class' => 'form-label'
                 ],
-                'disabled' => true,
                 'choice_attr' => function (CarModel $carModel) {
                     return ['class' => 'brand-' . strtolower($carModel->getCarBrand()->getName())];
                 },

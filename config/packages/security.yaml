@@ -39,7 +39,7 @@ security:
         # Permitir el acceso anónimo y autenticado a la ruta de registro
         - { path: ^/register, roles: [IS_AUTHENTICATED_FULLY, ROLE_ADMIN] }
 #        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/user(/edit|/delete|)?$, roles: [IS_AUTHENTICATED_FULLY, ROLE_ADMIN] }
+        - { path: ^/user(/edit|/delete|)?$, roles: [IS_AUTHENTICATED_FULLY, ROLE_ADMIN] }
 #        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:

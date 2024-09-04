@@ -60,7 +60,8 @@
                 app.request.attributes.get('_route') != 'add_car_brand' and
                 app.request.attributes.get('_route') != 'edit_car' and
                 app.request.attributes.get('_route') != 'edit_car_model' and
-                app.request.attributes.get('_route') != 'edit_car_brand'
+                app.request.attributes.get('_route') != 'edit_car_brand' and
+                app.request.attributes.get('_route') != 'add_sale'
             %}
                     {% include 'navbar.html.twig'%}
             {% endif %}

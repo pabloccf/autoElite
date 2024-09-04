@@ -18,7 +18,7 @@ class Sale
     private ?\DateTimeInterface $sale_date = null;
 
     #[ORM\Column]
-    private ?float $price = null;
+    private ?int $price = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $delivery_date = null;
@@ -35,7 +35,26 @@ class Sale
 
     #[ORM\OneToOne(inversedBy: 'sale', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Car $cars = null;
+    private ?Car $car = null;
+
+    /**
+     * @param int|null $id
+     * @param \DateTimeInterface|null $sale_date
+     * @param float|null $price
+     * @param \DateTimeInterface|null $delivery_date
+     * @param string|null $payment_form
+     * @param string|null $comments
+     */
+    public function __construct(?int $id = null, ?\DateTimeInterface $sale_date = null, ?float $price = null, ?\DateTimeInterface $delivery_date = null, ?string $payment_form = null, ?string $comments = null)
+    {
+        $this->id = $id;
+        $this->sale_date = $sale_date;
+        $this->price = $price;
+        $this->delivery_date = $delivery_date;
+        $this->payment_form = $payment_form;
+        $this->comments = $comments;
+    }
+
 
     public function getId(): ?int
     {
@@ -54,12 +73,12 @@ class Sale
         return $this;
     }
 
-    public function getPrice(): ?float
+    public function getPrice(): ?int
     {
         return $this->price;
     }
 
-    public function setPrice(float $price): static
+    public function setPrice(int $price): static
     {
         $this->price = $price;
 
@@ -114,14 +133,14 @@ class Sale
         return $this;
     }
 
-    public function getCars(): ?Car
+    public function getCar(): ?Car
     {
-        return $this->cars;
+        return $this->car;
     }
 
-    public function setCars(Car $cars): static
+    public function setCar(Car $car): static
     {
-        $this->cars = $cars;
+        $this->car = $car;
 
         return $this;
     }

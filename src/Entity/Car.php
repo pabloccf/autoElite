@@ -63,7 +63,7 @@ class Car
     #[ORM\Column]
     private ?bool $isDeleted = false;
 
-    #[ORM\OneToOne(mappedBy: 'cars', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'car', cascade: ['persist', 'remove'])]
     private ?Sale $sale = null;
 
     /**
@@ -307,8 +307,8 @@ class Car
     public function setSale(Sale $sale): static
     {
         // set the owning side of the relation if necessary
-        if ($sale->getCars() !== $this) {
-            $sale->setCars($this);
+        if ($sale->getCar() !== $this) {
+            $sale->setCar($this);
         }
 
         $this->sale = $sale;

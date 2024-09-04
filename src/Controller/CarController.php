@@ -79,6 +79,25 @@ class CarController extends AbstractController
         return $this->render('car/add.html.twig', ['carForm' => $form->createView()]);
     }
 
+    #[Route('car/view/{id}', name: 'view_car')]
+    public function view($id): RedirectResponse|Response
+    {
+        // Verificar si el usuario está autenticado
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');  // Redirigir a login si no está autenticado
+        }
+
+        $car = $this->carRepository->find($id);
+
+        if (!$car) {
+            throw $this->createNotFoundException('No se encontro el coche con el id ' . $id);
+        }
+
+        $carModel = $car->getCarModel();
+        $carBrand = $carModel->getCarBrand();
+
+        return $this->render('car/view.html.twig', array('car' => $car, 'carModel' => $carModel, 'carBrand' => $carBrand));
+    }
 
     /**
      * Función que renderiza la vista de editar los datos de un coche

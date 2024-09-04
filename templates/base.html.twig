@@ -30,6 +30,27 @@
                     color: white;
                     font-weight: bold;
                 }
+
+                .dealer-wallpaper {
+                    background-image: url("{{ asset('images/fondoConcesionario.jpg') }}");
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    display: flex;
+                    justify-content: center;
+                    text-align: center;
+                    width: 100%;
+                    height: 100vh;
+                }
+
+                .table-container {
+                    background-color: rgba(255, 255, 255, 0.8);
+                    border-radius: 10px;
+                    padding: 20px;
+                    padding-top: 0px;
+                    margin: 20px;
+                    width: 80%;
+                }
             </style>
 
             {% if app.request.attributes.get('_route') != 'app_login' and

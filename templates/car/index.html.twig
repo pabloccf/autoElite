@@ -5,29 +5,6 @@
 {% block body %}
     {{ parent() }}
 
-    <style>
-        .dealer-wallpaper {
-            background-image: url("{{ asset('images/fondoConcesionario.jpg') }}");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            display: flex;
-            justify-content: center;
-            text-align: center;
-            width: 100%;
-            height: 100vh;
-        }
-
-        .table-container {
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
-            padding: 20px;
-            padding-top: 0px;
-            margin: 20px;
-            width: 80%;
-        }
-    </style>
-
     <div class="container-fluid dealer-wallpaper">
         <div class="col-md-12 table-container">
             <div class="pt-5 pb-3 d-flex">
@@ -57,6 +34,7 @@
                             <td>{{ car.plate }}</td>
                             <td>{{ car.manufacture_year }}</td>
                             <td class="actions">
+                                <a href="{{ path('view_car', { id : car.id }) }}" class="btn btn-sm btn-info fa-solid fa-eye"></a>
                                 <a href="{{ path('edit_car', { id : car.id }) }}" class="btn btn-sm btn-warning fa-solid fa-pen-to-square"></a>
                                 <a href="javascript:void(0)" class="btn btn-sm btn-danger fa-solid fa-trash"
                                    onclick="confirmSweet('¿Estás seguro de eliminar el coche?', '{{ path('delete_car', { id: car.id }) }}', '{{ csrf_token('delete_car' ~ car.id) }}')">

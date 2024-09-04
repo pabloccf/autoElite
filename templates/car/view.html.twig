@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ parent() }}
+
+    <div class="container-fluid dealer-wallpaper">
+        <div class="col-md-12 table-container">
+            <div class="pt-5 pb-3 d-flex">
+                <h2 class="ms-5" style="text-align: left"><strong>{{ carBrand.name }}  {{ carModel.name }}</strong></h2>
+            </div>
+            <dl>
+                <dt>Imagen</dt>
+                <dd>
+                    <img src="{{ asset('uploads/models/' ~ carModel.image) }}" alt="{{ carModel.name }} logo" style="width: auto; height: 100px;">
+                    &nbsp;
+                </dd>
+            </dl>
+            <br>
+
+            <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+                    <dl class="text-start">
+                        <dt>Carrocer&iacute;a</dt>
+                        <dd>
+                            {{ carModel.bodyType }}
+                            &nbsp;
+                        </dd>
+                        <br>
+
+                        <dt>Color</dt>
+                        <dd>
+                            {{ car.colour }}
+                            &nbsp;
+                        </dd>
+                        <br>
+
+                        <dt>Matr&iacute;cula</dt>
+                        <dd>
+                            {{ car.plate }}
+                            &nbsp;
+                        </dd>
+                        <br>
+
+                        <dt>VIN</dt>
+                        <dd>
+                            {{ car.vin }}
+                            &nbsp;
+                        </dd>
+                        <br>
+
+                        <dt>Combustible</dt>
+                        <dd>
+                            {{ car.fuel }}
+                            &nbsp;
+                        </dd>
+                        <br>
+
+                        <dt>N&uacute;mero de cilindros</dt>
+                        <dd>
+                            {{ car.cylinders }}
+                            &nbsp;
+                        </dd>
+                        <br>
+
+                        <dt>Potencia</dt>
+                        <dd>
+                            {{ car.power }} CV
+                            &nbsp;
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+                    <dl>
+                        <dt>Número de kilometros</dt>
+                        <dd>
+                            {{ car.kilometers }} km
+                            &nbsp;
+                        </dd>
+                        <br>
+
+                        <dt>N&uacute;mero de puertas</dt>
+                        <dd>
+                            {{ car.doors }}
+                            &nbsp;
+                        </dd>
+                        <br>
+
+                        <dt>N&uacute;mero de dueños anteriores</dt>
+                        <dd>
+                            {{ car.previousOwners }}
+                            &nbsp;
+                        </dd>
+                        <br>
+
+                        <dt>Fecha de matriculaci&oacute;n</dt>
+                        <dd>
+                            {{ car.registrationDate | date('d-m-Y') }}
+                            &nbsp;
+                        </dd>
+                        <br>
+
+                        <dt>Año de fabricaci&oacute;n</dt>
+                        <dd>
+                            {{ car.manufactureYear }}
+                            &nbsp;
+                        </dd>
+                        <br>
+
+                        <dt>Estado</dt>
+                        <dd>
+                            {{ car.status }}
+                            &nbsp;
+                        </dd>
+                        <br>
+
+                        <dt>Necesita reparaci&oacute;n</dt>
+                        <dd>
+                            {% if car.needsRepair == 0 %}
+                                <span class="text-success">No necesita reparaci&oacute;n</span>
+                            {% elseif car.needsRepair == 1 %}
+                                <span class="text-danger">Necesita reparaci&oacute;n</span>
+                            {% endif %}
+                            &nbsp;
+                        </dd>
+                        <br>
+
+                        {% if car.extras is not empty %}
+                            <dt>Extras</dt>
+                            <dd>
+                                {{ car.extras }}
+                                &nbsp;
+                            </dd>
+                        {% endif %}
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

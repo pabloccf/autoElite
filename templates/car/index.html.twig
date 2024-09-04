@@ -34,45 +34,43 @@
                 <h2 class="ms-5" style="text-align: left"><strong>Coches</strong></h2>
                 <a href="{{ path('add_car') }}" class="btn btn-lg btn-success ms-auto fw-bold">Añadir &nbsp;<i class="fa-solid fa-car"></i></a>
             </div>
-            {#<div class="table-responsive d-flex align-items-center">
+            <div class="table-responsive d-flex align-items-center">
                 <table class="table table-hover">
                     <thead class="table-light">
                     <tr>
+                        <th>Imagen</th>
                         <th>Marca</th>
                         <th>Modelo</th>
                         <th>Matr&iacute;cula</th>
-                        <th>Combustible</th>
-                        <th>Potencia</th>
                         <th>Año de fabricaci&oacute;n</th>
-#}{#                        <th>Acciones</th>#}{#
+{#                        <th>Acciones</th>#}
                     </tr>
                     </thead>
                     <tbody>
-                    {% for user in users %}
-                        <tr data-id="{{ user.id }}">
-                            <td>{{ user.username }}</td>
-                            <td>{{ user.name }}</td>
-                            <td>{{ user.surname }}</td>
-                            <td>{{ user.email }}</td>
-                            <td>{{ user.telephone }}</td>
+                    {% for car in cars %}
+                        <tr data-id="{{ car.id }}">
                             <td>
-                                {% if 'ROLE_ADMIN' in user.roles %}
-                                    <strong>Administrador</strong>
-                                {% elseif 'ROLE_USER' in user.roles %}
-                                    <strong>Usuario</strong>
-                                {% endif %}
+                                <img src="{{ asset('uploads/models/' ~ car.model_image) }}" alt="{{ car.model_name }} logo" style="width: auto; height: 60px;">
                             </td>
-                            #}{#<td class="actions">
+                            <td>{{ car.brand_name }}</td>
+                            <td>{{ car.model_name }}</td>
+                            <td>{{ car.plate }}</td>
+                            <td>{{ car.manufacture_year }}</td>
+                            {#<td class="actions">
                                 <a href="{{ path('edit_user', { id : user.id }) }}" class="btn btn-sm btn-warning fa-solid fa-user-pen"></a>
                                 <a href="javascript:void(0)" class="btn btn-sm btn-danger fa-solid fa-user-slash"
                                    onclick="confirmSweet('¿Estás seguro de eliminar el usuario?', '{{ path('delete_user', { id: user.id }) }}', '{{ csrf_token('delete_user' ~ user.id) }}')">
                                 </a>
-                            </td>#}{#
+                            </td>#}
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
-            </div>#}
+            </div>
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(cars) }}
+            </div>
         </div>
     </div>
 {% endblock %}

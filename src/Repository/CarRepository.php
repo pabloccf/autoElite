@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Car;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -11,9 +13,38 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CarRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private EntityManagerInterface $entityManager;
+
+    /**
+     * @param ManagerRegistry $registry
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, Car::class);
+        $this->entityManager = $entityManager;
+    }
+
+
+    /**
+     * @return Query
+     */
+    public function findNotDeleted(): Query
+    {
+        $dql = '
+            SELECT c.id, c.plate, c.manufacture_year, cm.name AS model_name, cm.image AS model_image, cb.name AS brand_name
+            FROM App\Entity\Car c
+            JOIN c.carModel cm
+            JOIN cm.carBrand cb
+            WHERE c.isDeleted = :isDeleted
+        ';
+
+        $parameters = ['isDeleted' => 0];
+
+        $query = $this->entityManager->createQuery($dql);
+        $query->setParameters($parameters);
+
+        return $query;
     }
 
     //    /**

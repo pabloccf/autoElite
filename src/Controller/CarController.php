@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -78,8 +79,52 @@ class CarController extends AbstractController
         return $this->render('car/add.html.twig', ['carForm' => $form->createView()]);
     }
 
+
+    /**
+     * Función que renderiza la vista de editar los datos de un coche
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $id
+     * @param Request $request
+     * @return RedirectResponse|Response
+     */
+    #[Route('car/edit/{id}', name: 'edit_car')]
+    public function edit($id, Request $request): RedirectResponse|Response
+    {
+        // Verificar si el usuario está autenticado
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');  // Redirigir a login si no está autenticado
+        }
+
+        $car = $this->carRepository->find($id);
+
+        if (!$car) {
+            throw $this->createNotFoundException('No se encontro el coche con el id ' . $id);
+        }
+
+        $form = $this->createForm(CarFormType::class, $car, ['isEdit' => true]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->carService->update($car);
+
+           return $this->redirectToRoute('list_car');
+        }
+
+        return $this->render('car/edit.html.twig', array('car' => $car, 'carForm' => $form->createView()));
+    }
+
+    /**
+     * Función que se encarga de eliminar un coche
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $id
+     * @return RedirectResponse
+     */
     #[Route('car/delete/{id}', name: 'delete_car', methods: ['POST', 'DELETE'])]
-    public function delete($id)
+    public function delete($id): RedirectResponse
     {
         // Verificar si el usuario está autenticado
         if (!$this->getUser()) {

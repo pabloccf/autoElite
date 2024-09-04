@@ -25,6 +25,9 @@ class CarFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $car = $builder->getData();
+        $isEdit = $options['isEdit'];
+
         $builder
             ->add('colour', ColorType::class, [
                 'required' => false,
@@ -266,7 +269,8 @@ class CarFormType extends AbstractType
                     return $er->createQueryBuilder('cb')
                         ->where('cb.isDeleted = 0')
                         ->orderBy('cb.name', 'ASC');
-                }
+                },
+                'data' => $isEdit && $car && $car->getCarModel() ? $car->getCarModel()->getCarBrand() : null,
             ])
             ->add('send', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-lg gradient-button']
@@ -278,6 +282,7 @@ class CarFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Car::class,
+            'isEdit' => false,
         ]);
     }
 }

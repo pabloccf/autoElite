@@ -22,6 +22,36 @@ class CarService
 
 
     /**
+     * Función que edita los datos de un coche
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $car
+     * @param $needPersist
+     * @return array
+     */
+    public function update($car, $needPersist = false): array
+    {
+        $result = $this->carRepository->update($car, $needPersist);
+
+        if (!$result) {
+            return array(
+                'code' => 400,
+                'statusCode' => false,
+                'message' => 'No se han podido actualizar los datos del coche.',
+                'data' => null
+            );
+        }
+
+        return array(
+            'code' => 200,
+            'statusCode' => true,
+            'message' => 'El coche se ha actualizado correctamente.',
+            'data' => null
+        );
+    }
+
+    /**
      * Función que elimina un coche
      *
      * @author Pablo López Gosálvez <i92logop@uco.es>

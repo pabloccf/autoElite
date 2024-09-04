@@ -51,6 +51,31 @@ class CarRepository extends ServiceEntityRepository
         return $query;
     }
 
+
+    /**
+     * Función que edita los datos de un coche
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $car
+     * @param $needPersist
+     * @return bool
+     */
+    public function update($car, $needPersist = false): bool
+    {
+        try {
+            if ($needPersist) {
+                $this->entityManager->persist($car);
+            }
+
+            $this->entityManager->flush();
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * Función que elimina un coche
      *

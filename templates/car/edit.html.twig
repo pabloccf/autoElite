@@ -1,0 +1,239 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar coche{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+    <style>
+        .dealer-wallpaper {
+            background-image: url("{{ asset('images/fondoConcesionario.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+
+    <section class="vh-100 dealer-wallpaper" style="background-color: #eee;">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-lg-12 col-xl-11">
+                    <div class="card text-black" style="border-radius: 25px;">
+                        <div class="card-body pt-2 ps-4">
+                            <div>
+                                <p class="text-center h1 fw-bold mb-4 mx-1 mx-md-4 mt-4">Editar coche</p>
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item">
+                                            <a href="{{ path('list_car') }}">Volver</a>
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">Editar Coche</li>
+                                    </ol>
+                                </nav>
+                            </div>
+
+                            {{ form_start(carForm, {'attr': {'id': 'car_form'}}) }}
+                            <div class="row justify-content-center">
+                                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+
+                                    <div class="mx-1 mx-md-4">
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_label(carForm.carBrand) }}
+                                                {{ form_widget(carForm.carBrand) }}
+                                                <small class="form-text text-danger">{{ form_errors(carForm.carBrand) }}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_label(carForm.carModel) }}
+                                                {{ form_widget(carForm.carModel) }}
+                                                <small class="form-text text-danger">{{ form_errors(carForm.carModel) }}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            {{ form_label(carForm.colour) }}
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_widget(carForm.colour) }}
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_label(carForm.plate) }}
+                                                {{ form_widget(carForm.plate) }}
+                                                <small class="form-text text-danger">{{ form_errors(carForm.plate) }}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_label(carForm.vin) }}
+                                                {{ form_widget(carForm.vin) }}
+                                                <small class="form-text text-danger">{{ form_errors(carForm.vin) }}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_label(carForm.cylinders) }}
+                                                {{ form_widget(carForm.cylinders) }}
+                                                <small class="form-text text-danger">{{ form_errors(carForm.cylinders) }}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_label(carForm.power) }}
+                                                {{ form_widget(carForm.power) }}
+                                                <small class="form-text text-danger">{{ form_errors(carForm.power) }}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_label(carForm.kilometers) }}
+                                                {{ form_widget(carForm.kilometers) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+                                    <div class="mx-1 mx-md-4">
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_label(carForm.fuel) }}
+                                                {{ form_widget(carForm.fuel) }}
+                                                <small class="form-text text-danger">{{ form_errors(carForm.fuel) }}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_label(carForm.doors) }}
+                                                {{ form_widget(carForm.doors) }}
+                                                <small class="form-text text-danger">{{ form_errors(carForm.doors) }}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_label(carForm.status) }}
+                                                {{ form_widget(carForm.status) }}
+                                                <small class="form-text text-danger">{{ form_errors(carForm.status) }}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_label(carForm.previous_owners) }}
+                                                {{ form_widget(carForm.previous_owners) }}
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_label(carForm.registration_date) }}
+                                                {{ form_widget(carForm.registration_date) }}
+                                                <small class="form-text text-danger">{{ form_errors(carForm.registration_date) }}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_label(carForm.needs_repair) }}
+                                                {{ form_widget(carForm.needs_repair) }}
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_label(carForm.extras) }}
+                                                {{ form_widget(carForm.extras) }}
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_label(carForm.manufacture_year) }}
+                                                {{ form_widget(carForm.manufacture_year) }}
+                                                <small class="form-text text-danger">{{ form_errors(carForm.manufacture_year) }}</small>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                                    {{ form_widget(carForm.send, { 'label': 'Editar Coche' }) }}
+                                </div>
+                            </div>
+                            {{ form_end(carForm) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $(document).ready(function() {
+            // Función para filtrar los modelos según la marca seleccionada
+            function filterModelsByBrand() {
+                const selectedBrandClass = 'brand-' + $('#car_form_carBrand').find('option:selected').text().toLowerCase();
+
+                let modelSelect = $('#car_form_carModel');
+                modelSelect.find('option').each(function() {
+                    if ($(this).hasClass(selectedBrandClass)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+
+                modelSelect.prop('disabled', false); // Habilitar el select de modelos
+            }
+
+            // Inicialmente deshabilitar el select de modelos
+            let modelSelect = $('#car_form_carModel');
+
+            if ($('#car_form_carBrand').val()) {
+                // Si hay una marca seleccionada, filtrar los modelos y habilitar el select
+                filterModelsByBrand();
+                // Asegurarte de que el modelo seleccionado sea visible (si está guardado)
+                let selectedModel = modelSelect.find('option:selected');
+                if (!selectedModel.hasClass('brand-' + $('#car_form_carBrand').find('option:selected').text().toLowerCase())) {
+                    modelSelect.val(''); // Resetea el valor si el modelo seleccionado no coincide con la marca
+                }
+            } else {
+                modelSelect.prop('disabled', true); // Deshabilitar si no hay marca seleccionada
+            }
+
+            // Escuchar cambios en el select de marcas
+            $('#car_form_carBrand').change(function() {
+                modelSelect.val(''); // Resetea el valor del select de modelos
+                filterModelsByBrand(); // Filtra los modelos según la nueva marca seleccionada
+            });
+
+            // Validación al enviar el formulario
+            $('#car_form').on('submit', function(e) {
+                if ($('#car_form_carModel').prop('disabled') || !$('#car_form_carModel').val()) {
+                    e.preventDefault();
+                    alert('Por favor selecciona un modelo antes de enviar el formulario.');
+                }
+            });
+        });
+    </script>
+{% endblock %}

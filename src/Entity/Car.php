@@ -63,6 +63,9 @@ class Car
     #[ORM\Column]
     private ?bool $isDeleted = false;
 
+    #[ORM\OneToOne(mappedBy: 'cars', cascade: ['persist', 'remove'])]
+    private ?Sale $sale = null;
+
     /**
      * @param int|null $id
      * @param string|null $colour
@@ -292,6 +295,23 @@ class Car
     public function setDeleted(bool $isDeleted): static
     {
         $this->isDeleted = $isDeleted;
+
+        return $this;
+    }
+
+    public function getSale(): ?Sale
+    {
+        return $this->sale;
+    }
+
+    public function setSale(Sale $sale): static
+    {
+        // set the owning side of the relation if necessary
+        if ($sale->getCars() !== $this) {
+            $sale->setCars($this);
+        }
+
+        $this->sale = $sale;
 
         return $this;
     }

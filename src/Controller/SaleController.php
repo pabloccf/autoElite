@@ -77,6 +77,7 @@ class SaleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $car->setSold(true);
             $this->entityManager->persist($sale);
             $this->entityManager->flush();
 

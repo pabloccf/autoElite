@@ -66,6 +66,9 @@ class Car
     #[ORM\OneToOne(mappedBy: 'car', cascade: ['persist', 'remove'])]
     private ?Sale $sale = null;
 
+    #[ORM\Column]
+    private ?bool $isSold = false;
+
     /**
      * @param int|null $id
      * @param string|null $colour
@@ -312,6 +315,18 @@ class Car
         }
 
         $this->sale = $sale;
+
+        return $this;
+    }
+
+    public function isSold(): ?bool
+    {
+        return $this->isSold;
+    }
+
+    public function setSold(bool $isSold): static
+    {
+        $this->isSold = $isSold;
 
         return $this;
     }

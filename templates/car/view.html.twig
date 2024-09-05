@@ -9,7 +9,11 @@
         <div class="col-md-12 table-container">
             <div class="pt-5 pb-3 d-flex">
                 <h2 class="ms-5" style="text-align: left"><strong>{{ carBrand.name }}  {{ carModel.name }}</strong></h2>
-                <a href="{{ path('add_sale', { 'carId' : car.id }) }}" class="btn btn-sm btn-primary ms-auto fs-4">Vender</a>
+                {% if car.isSold %}
+                    <a href="{{ path('add_sale', { 'carId' : car.id }) }}" class="btn btn-sm btn-primary ms-auto fs-4 disabled">Vender</a>
+                {% else %}
+                    <a href="{{ path('add_sale', { 'carId' : car.id }) }}" class="btn btn-sm btn-primary ms-auto fs-4">Vender</a>
+                {% endif %}
             </div>
             <dl>
                 <dd>

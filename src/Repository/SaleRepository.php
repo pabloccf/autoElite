@@ -22,6 +22,13 @@ class SaleRepository extends ServiceEntityRepository
     }
 
 
+    /**
+     * Función que recupera los datos de la venta, el nombde de usuario, el nombre del modelo y el nombre de la marca del coche
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @return Query
+     */
     public function findSales(): Query
     {
         $dql = '

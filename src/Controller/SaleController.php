@@ -34,6 +34,15 @@ class SaleController extends AbstractController
     }
 
 
+    /**
+     * Función que renderiza la vista de la lista de ventas
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     * @return Response
+     */
     #[Route('/sale', name: 'list_sale')]
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
@@ -53,6 +62,16 @@ class SaleController extends AbstractController
         return $this->render('sale/index.html.twig', ['sales' => $pagination]);
     }
 
+    /**
+     * Función que renderiza la vista de vender un coche
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param Request $request
+     * @param Security $security
+     * @param $carId
+     * @return RedirectResponse|Response
+     */
     #[Route('/sale/add/{carId}', name: 'add_sale')]
     public function add(Request $request, Security $security, $carId): RedirectResponse|Response
     {

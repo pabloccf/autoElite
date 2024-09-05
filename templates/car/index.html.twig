@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Coches{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+    <div class="container-fluid dealer-wallpaper">
+        <div class="col-md-12 table-container">
+            <div class="pt-5 pb-3 d-flex">
+                <h2 class="ms-5" style="text-align: left"><strong>Coches</strong></h2>
+                <a href="{{ path('add_car') }}" class="btn btn-lg btn-success ms-auto fw-bold">Añadir &nbsp;<i class="fa-solid fa-car"></i></a>
+            </div>
+            <div class="table-responsive d-flex align-items-center">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Matr&iacute;cula</th>
+                        <th>Año de fabricaci&oacute;n</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for car in cars %}
+                        <tr data-id="{{ car.id }}">
+                            <td>
+                                <img src="{{ asset('uploads/models/' ~ car.model_image) }}" alt="{{ car.model_name }} logo" style="width: auto; height: 60px;">
+                            </td>
+                            <td>{{ car.brand_name }}</td>
+                            <td>{{ car.model_name }}</td>
+                            <td>{{ car.plate }}</td>
+                            <td>{{ car.manufacture_year }}</td>
+                            <td class="actions">
+                                <a href="{{ path('view_car', { id : car.id }) }}" class="btn btn-sm btn-info fa-solid fa-eye"></a>
+                                <a href="{{ path('edit_car', { id : car.id }) }}" class="btn btn-sm btn-warning fa-solid fa-pen-to-square"></a>
+                                <a href="javascript:void(0)" class="btn btn-sm btn-danger fa-solid fa-trash"
+                                   onclick="confirmSweet('¿Estás seguro de eliminar el coche?', '{{ path('delete_car', { id: car.id }) }}', '{{ csrf_token('delete_car' ~ car.id) }}')">
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(cars) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        window.confirmSweet = function (pregunta, ruta, csfrToken) {
+            Swal.fire({
+                title: pregunta,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(ruta, {
+                        method: 'DELETE', // O 'POST' si prefieres ese método
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csfrToken
+                        },
+                    }).then(response => {
+                        if (response.ok) {
+                            Swal.fire({
+                                title: 'Coche eliminado',
+                                icon: 'success',
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                window.location.href = '{{ path('list_car') }}';
+                            });
+                        } else {
+                            Swal.fire('Error', 'Hubo un problema al eliminar el coche.', 'error');
+                        }
+                    }).catch(error => {
+                        Swal.fire('Error', 'Ocurrió un error inesperado.', 'error');
+                    });
+                }
+            });
+        }
+    </script>
+{% endblock %}

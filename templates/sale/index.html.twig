@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ventas{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+    <div class="container-fluid dealer-wallpaper">
+        <div class="col-md-12 table-container">
+            <div class="pt-5 pb-3 d-flex">
+                <h2 class="ms-5" style="text-align: left"><strong>Ventas</strong></h2>
+            </div>
+            <div class="table-responsive d-flex align-items-center">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Coche</th>
+                        <th>Fecha de venta</th>
+                        <th>Precio</th>
+                        <th>Fecha de entrega</th>
+                        <th>Forma de pago</th>
+                        <th>Comentarios</th>
+                        <th>Usuario</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for sale in sales %}
+                        <tr data-id="{{ sale[0].id }}">
+                            <td>{{ sale[0].car.carModel.carBrand.name }} {{ sale[0].car.carModel.name }}</td>
+                            <td>{{ sale[0].saleDate | date('d-m-Y') }}</td>
+                            <td>{{ sale[0].price }}€</td>
+                            <td>{{ sale[0].deliveryDate | date('d-m-Y') }}</td>
+                            <td>{{ sale[0].paymentForm }}</td>
+                            <td>
+                                {% if sale[0].comments is not empty %}
+                                    {{ sale[0].comments }}
+                                {% else %}
+                                    Sin comentarios
+                                {% endif %}
+                            </td>
+                            <td>{{ sale[0].user.username }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(sales) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

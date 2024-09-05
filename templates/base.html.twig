@@ -17,6 +17,54 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+            <style>
+                body {
+                    background-color: white;
+                }
+
+                .gradient-button {
+                    background: rgb(34,182,195);
+                    background: linear-gradient(90deg, rgba(34,182,195,1) 0%, rgba(57,193,16,1) 100%);
+                    background: -webkit-linear-gradient(90deg, rgba(34,182,195,1) 0%, rgba(57,193,16,1) 100%);
+                    color: white;
+                    font-weight: bold;
+                }
+
+                .dealer-wallpaper {
+                    background-image: url("{{ asset('images/fondoConcesionario.jpg') }}");
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    display: flex;
+                    justify-content: center;
+                    text-align: center;
+                    width: 100%;
+                    height: 100vh;
+                }
+
+                .table-container {
+                    background-color: rgba(255, 255, 255, 0.8);
+                    border-radius: 10px;
+                    padding: 20px;
+                    padding-top: 0px;
+                    margin: 20px;
+                    width: 80%;
+                }
+            </style>
+
+            {% if app.request.attributes.get('_route') != 'app_login' and
+                app.request.attributes.get('_route') != 'app_register' and
+                app.request.attributes.get('_route') != 'add_car' and
+                app.request.attributes.get('_route') != 'add_car_model' and
+                app.request.attributes.get('_route') != 'add_car_brand' and
+                app.request.attributes.get('_route') != 'edit_car' and
+                app.request.attributes.get('_route') != 'edit_car_model' and
+                app.request.attributes.get('_route') != 'edit_car_brand' and
+                app.request.attributes.get('_route') != 'add_sale'
+            %}
+                    {% include 'navbar.html.twig'%}
+            {% endif %}
+        {% endblock %}
     </body>
 </html>

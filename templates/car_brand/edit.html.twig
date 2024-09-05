@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar marca{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+    <section class="vh-100 dealer-wallpaper" style="background-color: #eee;">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-lg-12 col-xl-11">
+                    <div class="card text-black" style="border-radius: 25px;">
+                        <div class="card-body p-md-5">
+                            <div class="row justify-content-center">
+                                <div class="col-md-12 col-lg-8 col-xl-7 order-2 order-lg-1">
+
+                                    <p class="text-center h1 fw-bold mb-4 mx-1 mx-md-4 mt-4">Editar marca</p>
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item">
+                                                <a href="{{ path('list_car_brand') }}">Volver</a>
+                                            </li>
+                                            <li class="breadcrumb-item active" aria-current="page">Editar marca</li>
+                                        </ol>
+                                    </nav>
+
+                                    {{ form_start(carBrandForm) }}
+                                    <div class="mx-1 mx-md-4">
+
+                                        <div class="d-flex flex-row text-start mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_label(carBrandForm.name) }}
+                                                {{ form_widget(carBrandForm.name) }}
+                                                <small class="form-text text-danger">{{ form_errors(carBrandForm.name) }}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row text-start mb-4">
+                                            <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                                                {{ form_label(carBrandForm.logo) }}
+                                                {{ form_widget(carBrandForm.logo) }}
+                                                <small class="form-text text-danger">{{ form_errors(carBrandForm.logo) }}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                                            {{ form_widget(carBrandForm.send, { 'label': 'Editar Marca' }) }}
+                                        </div>
+                                    </div>
+                                    {{ form_end(carBrandForm) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

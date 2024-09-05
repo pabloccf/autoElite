@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Marcas de coches{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+    <div class="container-fluid dealer-wallpaper">
+        <div class="col-md-12 table-container">
+            <div class="pt-5 pb-3 d-flex">
+                <h2 class="ms-5" style="text-align: left"><strong>Marcas de coches</strong></h2>
+                <a href="{{ path('add_car_brand') }}" class="btn btn-lg btn-success ms-auto fw-bold">Añadir &nbsp;<i class="fa-solid fa-car"></i></a>
+            </div>
+            <div class="table-responsive d-flex align-items-center">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nombre de la marca</th>
+                            <th>Logo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for carBrand in carBrands %}
+                            <tr data-id="{{ carBrand.id }}">
+                                <td class="d-flex justify-content-center" style="line-height: 60px">{{ carBrand.name }}</td>
+                                <td>
+                                    <img src="{{ asset('uploads/logos/' ~ carBrand.logo) }}" alt="{{ carBrand.name }} logo" style="width: auto; height: 60px;">
+                                </td>
+                                <td class="actions">
+                                    <a href="{{ path('edit_car_brand', { id : carBrand.id }) }}" class="btn btn-sm btn-warning fa-solid fa-pen-to-square"></a>
+                                    <a href="javascript:void(0)" class="btn btn-sm btn-danger fa-solid fa-trash"
+                                       onclick="confirmSweet('¿Estás seguro de eliminar la marca de coche?', '{{ path('delete_car_brand', { id: carBrand.id }) }}', '{{ csrf_token('delete_car_brand' ~ carBrand.id) }}')">
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(carBrands) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        window.confirmSweet = function (pregunta, ruta, csfrToken) {
+            Swal.fire({
+                title: pregunta,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(ruta, {
+                        method: 'DELETE', // O 'POST' si prefieres ese método
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csfrToken
+                        },
+                    }).then(response => {
+                        if (response.ok) {
+                            Swal.fire({
+                                title: 'Marca eliminada correctamente',
+                                icon: 'success',
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                window.location.href = '{{ path('list_car_brand') }}';
+                            });
+                        } else {
+                            Swal.fire('Error', 'Hubo un problema al eliminar la marca de coche.', 'error');
+                        }
+                    }).catch(error => {
+                        Swal.fire('Error', 'Ocurrió un error inesperado.', 'error');
+                    });
+                }
+            });
+        }
+    </script>
+{% endblock %}

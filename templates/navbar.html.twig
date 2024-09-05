@@ -1,0 +1,34 @@
+<nav class="navbar navbar-expand-lg py-3" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+        <a class="navbar-brand fs-4" href="#">
+            <img src="{{ asset('images/autoElite_logo.png') }}" alt="Logo" width="40" height="34" class="d-inline-block align-text-top">
+            AutoElite
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav d-flex flex-row fs-5">
+                {% if app.user is not null and 'ROLE_ADMIN' in app.user.roles %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user">Usuarios</a>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/car">Coches</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/car/model">Modelos de coches</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/car/brand">Marcas de coches</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/sale">Ventas</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto fs-5">
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Cerrar sesi&oacute;n</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

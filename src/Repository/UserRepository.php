@@ -4,6 +4,9 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -14,9 +17,33 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    private EntityManagerInterface $entityManager;
+
+    /**
+     * @param ManagerRegistry $registry
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, User::class);
+        $this->entityManager = $entityManager;
+    }
+
+
+    /**
+     * Función que recupera todos los datos de los usuarios
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     * @return Query
+     */
+    public function getUsers(): Query
+    {
+        $dql = '
+            SELECT u
+            FROM App\Entity\User u
+        ';
+
+        return $this->entityManager->createQuery($dql);
     }
 
     /**
@@ -29,8 +56,90 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         }
 
         $user->setPassword($newHashedPassword);
-        $this->getEntityManager()->persist($user);
-        $this->getEntityManager()->flush();
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * Función que recupera la contraseña de un usuario
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $id
+     * @return array|bool $currentPassword
+     * @throws Exception
+     * @throws \Throwable
+     */
+    public function getCurrentPassword($id): array|bool
+    {
+        $sql =
+            'SELECT 
+                u.password
+            FROM 
+                user u
+            WHERE 
+                u.id = :id'
+        ;
+
+        $parameters = ['id' => $id];
+
+        try {
+            $connection = $this->entityManager->getConnection();
+            $query = $connection->prepare($sql);
+            $resultQuery = $query->executeQuery($parameters);
+            $currentPassword = $resultQuery->fetchAssociative();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
+        return $currentPassword;
+    }
+
+    /**
+     * Función que actualiza la contraseña de un usuario
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $user
+     * @param $encodedPassword
+     * @param $needPersist
+     * @return bool
+     */
+    public function update($user, $encodedPassword, $needPersist = false): bool
+    {
+        try {
+            $user->setPassword($encodedPassword);
+
+            if ($needPersist) {
+                $this->entityManager->persist($user);
+            }
+
+            $this->entityManager->flush();
+        } catch (\Throwable $th) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Función que elimina un usuario de la base de datos
+     *
+     * @author Pablo López Gosálvez <i92logop@uco.es>
+     *
+     * @param $user
+     * @return bool
+     */
+    public function remove($user): bool
+    {
+        try {
+            $this->entityManager->remove($user);
+            $this->entityManager->flush();
+        } catch (\Throwable $th) {
+            return false;
+        }
+
+        return true;
     }
 
     //    /**

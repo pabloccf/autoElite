@@ -5,7 +5,27 @@
 {% block body %}
     {{ parent() }}
 
-    <section class="vh-100 dealer-wallpaper" style="background-color: #eee;">
+    <style>
+        .dealer-wallpaper {
+            background-image: url("{{ asset('images/fondoConcesionario.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            height: 110vh;
+        }
+        
+        @media (max-height: 865px) {
+            .dealer-wallpaper {
+                height: 120vh;
+            }
+        }
+    </style>
+
+    <section class="dealer-wallpaper" style="background-color: #eee;">
         <div class="container h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-lg-12 col-xl-11">

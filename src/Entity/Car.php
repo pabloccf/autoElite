@@ -44,7 +44,7 @@ class Car
     #[ORM\Column(nullable: true)]
     private ?int $previous_owners = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $registration_date = null;
 
     #[ORM\Column]

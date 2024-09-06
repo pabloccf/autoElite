@@ -16,16 +16,11 @@ class CarBrand
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\NotBlank(message: 'Este campo no puede estar vacío.')]
+
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[Assert\NotBlank(message: 'Este campo no puede estar vacío.')]
-    #[Assert\File(
-        maxSize: '1024k',
-        mimeTypes: ['image/jpeg', 'image/png', 'image/svg+xml'],
-        mimeTypesMessage: 'Por favor, adjunte una imagen SVG, JPEG o PNG válida.'
-    )]
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $logo = null;
 

@@ -76,7 +76,7 @@ class CarController extends AbstractController
             return $this->redirectToRoute('list_car');
         }
 
-        return $this->render('car/add.html.twig', ['carForm' => $form->createView()]);
+        return $this->render('car/add.html.twig', ['carForm' => $form]);
     }
 
     #[Route('car/view/{id}', name: 'view_car')]
@@ -131,7 +131,7 @@ class CarController extends AbstractController
            return $this->redirectToRoute('list_car');
         }
 
-        return $this->render('car/edit.html.twig', array('car' => $car, 'carForm' => $form->createView()));
+        return $this->render('car/edit.html.twig', array('car' => $car, 'carForm' => $form));
     }
 
     /**

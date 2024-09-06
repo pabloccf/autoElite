@@ -173,7 +173,6 @@ class CarFormType extends AbstractType
             ])
             ->add('registration_date', DateType::class, [
                 'widget' => 'single_text',
-                'required' => false,
                 'format' => 'yyyy-MM-dd',
                 'attr' => [
                     'class' => 'form-control'

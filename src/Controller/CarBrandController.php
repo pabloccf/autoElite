@@ -103,7 +103,7 @@ class CarBrandController extends AbstractController
             }
         }
 
-        return $this->render('car_brand/add.html.twig', ['carBrandForm' => $form->createView()]);
+        return $this->render('car_brand/add.html.twig', ['carBrandForm' => $form]);
     }
 
     /**
@@ -149,7 +149,7 @@ class CarBrandController extends AbstractController
             return $this->redirectToRoute('list_car_brand');
         }
 
-        return $this->render('car_brand/edit.html.twig', array('carBrand' => $carBrand, 'carBrandForm' => $form->createView()));
+        return $this->render('car_brand/edit.html.twig', array('carBrand' => $carBrand, 'carBrandForm' => $form));
     }
 
     /**

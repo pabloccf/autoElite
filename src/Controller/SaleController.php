@@ -103,6 +103,6 @@ class SaleController extends AbstractController
             return $this->redirectToRoute('list_sale');
         }
 
-        return $this->render('sale/add.html.twig', ['saleForm' => $form->createView()]);
+        return $this->render('sale/add.html.twig', ['saleForm' => $form]);
     }
 }

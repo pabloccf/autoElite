@@ -103,10 +103,6 @@ class RegistrationFormType extends AbstractType
                             'minMessage' => 'Tu contraseña debe tener al menos {{ limit }} caracteres',
                             // max length allowed by Symfony for security reasons
                             'max' => 4096,
-                        ]),
-                        new Regex([
-                            'pattern' => '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).*$/',
-                            'message' => 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter alfanumérico'
                         ])
                     ]
                 )

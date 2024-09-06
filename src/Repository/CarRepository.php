@@ -40,10 +40,10 @@ class CarRepository extends ServiceEntityRepository
             FROM App\Entity\Car c
             JOIN c.carModel cm
             JOIN cm.carBrand cb
-            WHERE c.isDeleted = :isDeleted
+            WHERE c.isDeleted = :isDeleted AND c.isSold = :isSold
         ';
 
-        $parameters = ['isDeleted' => 0];
+        $parameters = array('isDeleted' => 0, 'isSold' => 0);
 
         $query = $this->entityManager->createQuery($dql);
         $query->setParameters($parameters);

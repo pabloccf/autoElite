@@ -37,5 +37,5 @@ Una vez completados los pasos anteriores, ya podremos desplegar nuestro proyecto
 symfony server:start
 ```
 
-## Author
+## Autor
 - **Pablo López Gosálvez** - [Github](https://github.com/pabloccf)
